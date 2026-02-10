@@ -26,36 +26,43 @@ export default function Hero({ className }: { className?: string }) {
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
             <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
 
-            <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center space-y-6">
-                <div className="animate-fade-in-down" style={{ animationDelay: "0.1s" }}>
-                    <span className="py-1.5 px-5 rounded-full bg-white/5 border border-white/10 text-primary text-xs md:text-sm font-medium tracking-[0.2em] backdrop-blur-md uppercase">
+            <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
+                <div className="animate-fade-in-down mb-6" style={{ animationDelay: "0.1s" }}>
+                    <span className="py-1.5 px-5 rounded-full bg-white/5 border border-white/10 text-primary text-xs md:text-sm font-medium tracking-[0.2em] backdrop-blur-md">
                         Sookmyung Programming Club
                     </span>
                 </div>
 
-                {/* <h1 className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+                <h1 className="animate-fade-in-up mb-3" style={{ animationDelay: "0.2s" }}>
                     <span
-                        className="block text-7xl md:text-9xl font-black text-white tracking-tighter"
+                        className="block text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter"
                         style={{
                             textShadow: "0 0 40px rgba(140, 224, 244, 0.4)"
                         }}
                     >
                         SOLUX
                     </span>
-                </h1> */}
-
-
-                <h1 className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-                    <span className="block text-7xl md:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200 tracking-tighter drop-shadow-2xl">
-                        SOLUX
-                    </span>
                 </h1>
 
-                <div className="max-w-2xl animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-                    <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed break-keep">
-                        숙명여자대학교 유일의 프로그래밍 중앙동아리
+                {/* <h1 className="animate-fade-in-up mb-8" style={{ animationDelay: "0.2s" }}>
+                    <span className="block text-7xl md:text-8xl lg:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200 tracking-tighter drop-shadow-2xl">
+                        SOLUX
+                    </span>
+                </h1> */}
+
+                <div className="max-w-3xl animate-fade-in-up flex flex-col items-center gap-6" style={{ animationDelay: "0.4s" }}>
+                    <p className="text-xl md:text-2xl text-white font-bold tracking-tight break-keep bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200">
+                        숙명여자대학교 유일 중앙 프로그래밍 동아리
+                    </p>
+
+                    <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    <p className="text-lg text-gray-400 font-light leading-relaxed break-keep">
+                        소프트웨어학부 리눅스 학회에서 출발해, <br className="hidden md:block" />
+                        이제는 전공을 넘어 다양한 분야의 학우들이 모여 <br className="hidden md:block" />
+                        <span className="text-white font-medium">더 넓은 세상의 가능성</span>을 코딩합니다.
                     </p>
                 </div>
+
             </div>
 
             <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-fade-in" style={{ animationDelay: "1s" }}>
