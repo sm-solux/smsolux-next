@@ -1,0 +1,70 @@
+"use client";
+
+import { Canvas } from "@react-three/fiber";
+import { Sparkles, Stars } from "@react-three/drei";
+import { Suspense } from "react";
+
+export default function Hero({ className }: { className?: string }) {
+    return (
+        <section className={`relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#0F1012] ${className}`}>
+            <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+                <Canvas camera={{ position: [0, 0, 1] }}>
+                    <Suspense fallback={null}>
+                        <Sparkles
+                            count={200}
+                            scale={[10, 10, 10]}
+                            size={2}
+                            speed={0.4}
+                            opacity={0.6}
+                            color="#8CE0F4"
+                        />
+                        <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+                    </Suspense>
+                </Canvas>
+            </div>
+
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
+
+            <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center space-y-6">
+                <div className="animate-fade-in-down" style={{ animationDelay: "0.1s" }}>
+                    <span className="py-1.5 px-5 rounded-full bg-white/5 border border-white/10 text-primary text-xs md:text-sm font-medium tracking-[0.2em] backdrop-blur-md uppercase">
+                        Sookmyung Programming Club
+                    </span>
+                </div>
+
+                {/* <h1 className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+                    <span
+                        className="block text-7xl md:text-9xl font-black text-white tracking-tighter"
+                        style={{
+                            textShadow: "0 0 40px rgba(140, 224, 244, 0.4)"
+                        }}
+                    >
+                        SOLUX
+                    </span>
+                </h1> */}
+
+
+                <h1 className="animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+                    <span className="block text-7xl md:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200 tracking-tighter drop-shadow-2xl">
+                        SOLUX
+                    </span>
+                </h1>
+
+                <div className="max-w-2xl animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
+                    <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed break-keep">
+                        숙명여자대학교 유일의 프로그래밍 중앙동아리
+                    </p>
+                </div>
+            </div>
+
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-fade-in" style={{ animationDelay: "1s" }}>
+                <span className="text-[10px] text-gray-500 font-mono tracking-widest uppercase mb-2">Scroll Down</span>
+                <div className="w-6 h-10 border-2 border-gray-500/50 rounded-full flex justify-center p-1 backdrop-blur-sm">
+                    <div className="w-1 h-2 bg-primary rounded-full animate-scroll-wheel"></div>
+                </div>
+            </div>
+
+        </section>
+    );
+}
