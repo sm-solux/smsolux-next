@@ -22,12 +22,12 @@ export const GenerationSection = ({ archive }: { archive: GenerationArchive }) =
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5 }}
-            className="relative pl-6 md:pl-16"
+            className="relative pl-8 md:pl-10"
         >
-            <div className="absolute -left-[5px] top-2.5 w-[9px] h-[9px] rounded-full bg-[#8CE0F4] shadow-[0_0_10px_#8CE0F4]" />
+            <div className="absolute left-0 top-3 w-3 h-3 -translate-x-1/2 rounded-full bg-[#8CE0F4] shadow-[0_0_12px_#8CE0F4]" />
 
             <div className="flex flex-row items-baseline gap-3 mb-6 md:mb-8">
-                <h2 className="text-3xl md:text-4xl font-bold text-white flex items-baseline gap-2">
+                <h2 className="text-2xl md:text-3xl font-bold text-white flex items-baseline gap-2">
                     {archive.gen}기
                 </h2>
                 <span className="text-gray-600 font-mono text-xs md:text-sm">{archive.year}</span>

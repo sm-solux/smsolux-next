@@ -39,7 +39,7 @@ export default function JoinUs({ className }: { className?: string }) {
                         </button>
                     </Link>
 
-                    <Link href="/projects">
+                    <Link href="/project">
                         <button className="px-8 py-3 bg-transparent border border-white/20 text-white text-md md:text-lg font-medium rounded-full transition-all hover:bg-white/10 hover:border-white/40">
                             프로젝트 구경하기
                         </button>
