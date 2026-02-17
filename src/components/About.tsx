@@ -49,7 +49,7 @@ export default function About({ className }: { className?: string }) {
                     <div className="w-full lg:w-6/12 space-y-8">
                         <div className="space-y-4">
                             <span className="text-primary text-sm font-bold tracking-widest uppercase border-b border-primary/30 pb-1">Who We Are</span>
-                            <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+                            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
                                 Beyond Lines of Code, <br />
                                 We Bring <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">Ideas to Life.</span>
                             </h2>
