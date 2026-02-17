@@ -1,16 +1,7 @@
 import { AwardBadge, CategoryBadge, TechBadge } from "./Badge";
 import { Code, ExternalLink, Users, ArrowUpRight } from "lucide-react";
 
-type Project = {
-    title: string;
-    teamName: string;
-    desc: string;
-    award?: string; // e.g., "대상", "최우수상"
-    category: "Web" | "App" | "Game" | "Data";
-    stacks: string[];
-    image?: string; // 이미지 경로 (없으면 그라디언트 대체)
-    link: string;
-};
+import { Project } from "@/types/project";
 
 export const ProjectCard = ({ project }: { project: Project }) => {
     return (
@@ -18,18 +9,21 @@ export const ProjectCard = ({ project }: { project: Project }) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="group block relative bg-[#151618] border border-white/5 hover:border-[#8CE0F4]/50 rounded-xl md:rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(140,224,244,0.1)]"
+            className="group block relative bg-[#16171A] border border-white/10 rounded-2xl overflow-hidden transition-colors duration-300 hover:border-white/20"
         >
             {project.award && <AwardBadge rank={project.award} />}
             <CategoryBadge category={project.category} />
 
             <div className="h-40 md:h-44 w-full relative overflow-hidden bg-gray-900">
                 {project.image ? (
-                    <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                    <>
+                        <img
+                            src={project.image}
+                            alt={project.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    </>
                 ) : (
                     <div
                         className={`w-full h-full bg-gradient-to-br ${project.category === "Web" ? "from-slate-800 to-gray-800" :
@@ -53,10 +47,10 @@ export const ProjectCard = ({ project }: { project: Project }) => {
 
             <div className="p-4 md:p-6">
                 <div className="flex justify-between items-start mb-1.5">
-                    <h4 className="text-lg md:text-xl font-bold text-white group-hover:text-[#8CE0F4] transition-colors truncate pr-2">
+                    <h4 className="text-lg md:text-xl font-bold text-white group-hover:text-white/90 transition-colors truncate pr-2">
                         {project.title}
                     </h4>
-                    <ExternalLink size={16} className="text-gray-600 group-hover:text-[#8CE0F4] transition-colors flex-shrink-0 mt-1" />
+                    <ExternalLink size={16} className="text-gray-600 group-hover:text-white/30 group-hover:text-white/60 transition-colors flex-shrink-0 mt-1" />
                 </div>
 
                 <div className="flex items-center gap-2 text-xs md:text-sm text-gray-500 mb-3 md:mb-4">

@@ -2,27 +2,7 @@ import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 import { ProjectCard } from "./ProjectCard";
 
-type Project = {
-    title: string;
-    teamName: string;
-    desc: string;
-    award?: string; // e.g., "대상", "최우수상"
-    category: "Web" | "App" | "Game" | "Data";
-    stacks: string[];
-    image?: string; // 이미지 경로 (없으면 그라디언트 대체)
-    link: string;
-};
-
-type SemesterInfo = {
-    term: string; // "1학기" or "2학기"
-    projects: Project[];
-};
-
-type GenerationArchive = {
-    gen: number; // 기수
-    year: number;
-    semesters: SemesterInfo[];
-};
+import { GenerationArchive, SemesterInfo } from "@/types/project";
 
 export const SemesterSection = ({ semester }: { semester: SemesterInfo }) => {
     return (
