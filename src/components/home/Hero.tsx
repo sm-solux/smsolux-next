@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { Sparkles, Stars } from "@react-three/drei";
 import { Suspense } from "react";
 import { TextBadge } from "@/components/common/TextBadge";
+import { motion } from "framer-motion";
 
 export default function Hero({ className }: { className?: string }) {
     return (
@@ -24,15 +25,48 @@ export default function Hero({ className }: { className?: string }) {
                 </Canvas>
             </div>
 
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
-            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
+            <motion.div
+                animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                }}
+                className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"
+            />
+            <motion.div
+                animate={{
+                    scale: [1, 1.3, 1],
+                    opacity: [0.2, 0.5, 0.2],
+                }}
+                transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1,
+                }}
+                className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"
+            />
 
             <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
-                <div className="animate-fade-in-down mb-6" style={{ animationDelay: "0.1s" }}>
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="mb-6"
+                >
                     <TextBadge text="Sookmyung Programming Club" />
-                </div>
+                </motion.div>
 
-                <h1 className="animate-fade-in-up mb-3" style={{ animationDelay: "0.2s" }}>
+                <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="mb-3"
+                >
                     <span
                         className="block text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter"
                         style={{
@@ -41,15 +75,14 @@ export default function Hero({ className }: { className?: string }) {
                     >
                         SOLUX
                     </span>
-                </h1>
+                </motion.h1>
 
-                {/* <h1 className="animate-fade-in-up mb-8" style={{ animationDelay: "0.2s" }}>
-                    <span className="block text-7xl md:text-8xl lg:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200 tracking-tighter drop-shadow-2xl">
-                        SOLUX
-                    </span>
-                </h1> */}
-
-                <div className="max-w-3xl animate-fade-in-up flex flex-col items-center gap-6" style={{ animationDelay: "0.4s" }}>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="max-w-3xl flex flex-col items-center gap-6"
+                >
                     <p className="text-xl md:text-2xl text-white font-bold tracking-tight break-keep bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200">
                         숙명여자대학교 유일 중앙 프로그래밍 동아리
                     </p>
@@ -60,16 +93,25 @@ export default function Hero({ className }: { className?: string }) {
                         이제는 전공을 넘어 다양한 분야의 학우들이 모여 <br className="hidden md:block" />
                         <span className="text-white font-medium">더 넓은 세상의 가능성</span>을 코딩합니다.
                     </p>
-                </div>
+                </motion.div>
 
             </div>
 
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-fade-in" style={{ animationDelay: "1s" }}>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 1 }}
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+            >
                 <span className="text-[10px] text-gray-500 font-mono tracking-widest uppercase mb-2">Scroll Down</span>
                 <div className="w-6 h-10 border-2 border-gray-500/50 rounded-full flex justify-center p-1 backdrop-blur-sm">
-                    <div className="w-1 h-2 bg-primary rounded-full animate-scroll-wheel"></div>
+                    <motion.div
+                        animate={{ y: [0, 12, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-1 h-2 bg-primary rounded-full"
+                    />
                 </div>
-            </div>
+            </motion.div>
 
         </section>
     );

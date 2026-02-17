@@ -42,7 +42,6 @@ export default function Header() {
                     />
                 </Link>
 
-                {/* PC Menu */}
                 <nav className="hidden md:flex items-center gap-10">
                     {navLinks.map((link) => {
                         const isActive = pathname.startsWith(link.href);
@@ -65,7 +64,6 @@ export default function Header() {
                     })}
                 </nav>
 
-                {/* Mobile Menu Button */}
                 <button
                     className="md:hidden text-white p-2 hover:text-[#8CE0F4] transition-colors shrink-0"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -79,7 +77,6 @@ export default function Header() {
                 </button>
             </div>
 
-            {/* Mobile Menu */}
             {isMobileMenuOpen && (
                 <div className="md:hidden absolute top-16 left-0 w-full bg-[#0F1012]/95 backdrop-blur-xl border-b border-white/10 shadow-2xl animate-in slide-in-from-top-5 duration-200">
                     <div className="flex flex-col py-2">
