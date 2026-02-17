@@ -7,7 +7,8 @@ import {
     BookOpen,
     MonitorPlay,
     PartyPopper,
-    CalendarDays
+    CalendarDays,
+    Star
 } from "lucide-react";
 import { Activity } from "@/types/activity";
 
@@ -17,17 +18,17 @@ interface ActivitiesClientProps {
 
 const ActivityIcon = ({ title }: { title: string }) => {
     if (title.includes("프로젝트")) return <Rocket size={28} className="text-[#8CE0F4]" />;
+    if (title.includes("스타터")) return <Star size={28} className="text-[#ADE6D2]" />;
     if (title.includes("발표회")) return <Presentation size={28} className="text-[#A1B3DD]" />;
-    if (title.includes("스터디")) return <BookOpen size={28} className="text-[#ADE6D2]" />;
-    if (title.includes("강의")) return <MonitorPlay size={28} className="text-[#F4A7B9]" />;
-    if (title.includes("오프라인")) return <PartyPopper size={28} className="text-[#FFD166]" />;
-    return <CalendarDays size={28} className="text-gray-400" />;
+    if (title.includes("스터디")) return <BookOpen size={28} className="text-[#A6C9D8]" />;
+    if (title.includes("강의")) return <MonitorPlay size={28} className="text-[#8CE0F4]/80" />;
+    if (title.includes("오프라인")) return <PartyPopper size={28} className="text-[#ADE6D2]/80" />;
+    return <CalendarDays size={28} className="text-white/40" />;
 };
 
 export default function ActivitiesClient({ initialActivities }: ActivitiesClientProps) {
     return (
         <main className="min-h-screen bg-[#0F1012] text-white selection:bg-[#8CE0F4]/30 overflow-x-hidden">
-            {/* Hero Section */}
             <div className="relative z-10 container mx-auto px-6 md:px-20 pt-32 pb-20 max-w-6xl">
                 <div className="mb-24 space-y-6 text-center md:text-left">
                     <motion.h1
