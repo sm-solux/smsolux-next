@@ -6,22 +6,16 @@ import { GenerationArchive, SemesterInfo } from "@/types/project";
 
 export const SemesterSection = ({ semester }: { semester: SemesterInfo }) => {
     return (
-        <div>
-            <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4 md:mb-6 flex items-center gap-2">
-                <Calendar size={16} className="text-[#8CE0F4]" />
-                {semester.term}
-            </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {semester.projects.map((project, idx) => (
-                    <ProjectCard key={idx} project={project} />
-                ))}
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {semester.projects.map((project, idx) => (
+                <ProjectCard key={idx} project={project} />
+            ))}
         </div>
     );
 };
 
 export const GenerationSection = ({ archive }: { archive: GenerationArchive }) => {
+    console.log(archive)
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -40,6 +34,11 @@ export const GenerationSection = ({ archive }: { archive: GenerationArchive }) =
             </div>
 
             <div className="space-y-8 md:space-y-12">
+
+                <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4 md:mb-6 flex items-center gap-2">
+                    <Calendar size={16} className="text-[#8CE0F4]" />
+                    {archive.semesters[0].term}
+                </h3>
                 {archive.semesters.map((semester, idx) => (
                     <SemesterSection key={idx} semester={semester} />
                 ))}

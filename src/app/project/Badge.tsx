@@ -8,18 +8,9 @@ export const TechBadge = ({ stack }: { stack: string }) => (
 
 
 export const AwardBadge = ({ rank }: { rank: string }) => {
-    let tone = "text-white/70 bg-white/5 border-white/10";
-
-    if (rank === "대상")
-        tone = "text-white/90 bg-white/10 border-white/20";
-    if (rank === "최우수상")
-        tone = "text-white/80 bg-white/7 border-white/15";
-    if (rank === "우수상")
-        tone = "text-white/75 bg-white/5 border-white/10";
-
     return (
         <div
-            className={`absolute top-4 right-4 z-20 text-[11px] font-medium tracking-wide px-3 py-1.5 rounded-md border backdrop-blur-sm ${tone}`}
+            className="absolute top-4 right-4 z-20 text-[11px] font-medium tracking-wide px-3 py-1.5 rounded-md border backdrop-blur-sm bg-black/60 border-white/30"
         >
             {rank}
         </div>
