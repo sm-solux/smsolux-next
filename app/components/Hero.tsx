@@ -3,6 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Sparkles, Stars } from "@react-three/drei";
 import { Suspense } from "react";
+import { TextBadge } from "./TextBade";
 
 export default function Hero({ className }: { className?: string }) {
     return (
@@ -28,9 +29,7 @@ export default function Hero({ className }: { className?: string }) {
 
             <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
                 <div className="animate-fade-in-down mb-6" style={{ animationDelay: "0.1s" }}>
-                    <span className="py-1.5 px-5 rounded-full bg-white/5 border border-white/10 text-primary text-xs md:text-sm font-medium tracking-[0.2em] backdrop-blur-md">
-                        Sookmyung Programming Club
-                    </span>
+                    <TextBadge text="Sookmyung Programming Club" />
                 </div>
 
                 <h1 className="animate-fade-in-up mb-3" style={{ animationDelay: "0.2s" }}>
