@@ -3,7 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Sparkles, Stars } from "@react-three/drei";
 import { Suspense } from "react";
-import { TextBadge } from "./TextBade";
+import { TextBadge } from "@/components/common/TextBadge";
 
 export default function Hero({ className }: { className?: string }) {
     return (
@@ -55,7 +55,7 @@ export default function Hero({ className }: { className?: string }) {
                     </p>
 
                     <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                    <p className="text-lg text-gray-400 font-light leading-relaxed break-keep">
+                    <p className="text-lg text-gray-400 font-semilight leading-relaxed break-keep">
                         소프트웨어학부 리눅스 학회에서 출발해, <br className="hidden md:block" />
                         이제는 전공을 넘어 다양한 분야의 학우들이 모여 <br className="hidden md:block" />
                         <span className="text-white font-medium">더 넓은 세상의 가능성</span>을 코딩합니다.

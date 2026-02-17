@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import ActivitiesClient from './ActivitysClient';
+import ActivitiesClient from './ActivitiesClient';
 import { supabase } from '@/lib/supabase';
 
 export const metadata: Metadata = {
