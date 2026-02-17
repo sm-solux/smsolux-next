@@ -28,7 +28,7 @@ export default function ProjectsClient({ initialArchives }: ProjectsClientProps)
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-gray-400 text-md md:text-lg max-w-2xl leading-relaxed break-keep mx-auto md:mx-0"
+                        className="text-white/50 text-base md:text-lg max-w-xl leading-relaxed break-keep mx-auto md:mx-0"
                     >
                         솔룩스를 대표하는 수상 프로젝트들을 확인해보세요.
                     </motion.p>

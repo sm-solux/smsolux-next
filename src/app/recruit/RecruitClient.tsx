@@ -39,13 +39,13 @@ export default function RecruitClient({ initialFaqs }: RecruitClientProps) {
 
     return (
         <main className="min-h-screen bg-[#0F1012] text-white selection:bg-[#8CE0F4]/30 overflow-x-hidden">
-            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-16 md:pt-32 pb-20 max-w-6xl">
+            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-32 pb-20 max-w-6xl">
                 <div className="mb-24 space-y-6 text-center md:text-left">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white leading-tight tracking-tight"
+                        className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight items-center"
                     >
                         Join the{" "}
                         <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ADE6D2] via-[#A6C9D8] to-[#A1B3DD]">

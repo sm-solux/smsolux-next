@@ -46,7 +46,7 @@ export default function ActivitiesClient({ initialActivities }: ActivitiesClient
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed break-keep mx-auto md:mx-0"
+                        className="text-white/50 text-base md:text-lg max-w-xl leading-relaxed break-keep mx-auto md:mx-0"
                     >
                         솔룩스의 1년은 몰입과 성장의 시간으로 가득 차 있습니다.
                     </motion.p>
