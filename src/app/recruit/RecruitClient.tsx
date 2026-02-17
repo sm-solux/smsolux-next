@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, Users, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
-import { Faq } from "@/types/recruit";
+import { Faq, RecruitmentNotice } from "@/types/recruit";
 
 const coreValues = [
     {
@@ -28,9 +28,10 @@ const coreValues = [
 
 interface RecruitClientProps {
     initialFaqs: Faq[];
+    activeRecruitment?: RecruitmentNotice | null;
 }
 
-export default function RecruitClient({ initialFaqs }: RecruitClientProps) {
+export default function RecruitClient({ initialFaqs, activeRecruitment }: RecruitClientProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     const toggleAccordion = (index: number) => {
@@ -39,7 +40,7 @@ export default function RecruitClient({ initialFaqs }: RecruitClientProps) {
 
     return (
         <main className="min-h-screen bg-[#0F1012] text-white selection:bg-[#8CE0F4]/30 overflow-x-hidden">
-            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-32 pb-20 max-w-6xl">
+            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-16 md:pt-32 pb-20 max-w-6xl">
                 <div className="mb-24 space-y-6 text-center md:text-left">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -87,7 +88,7 @@ export default function RecruitClient({ initialFaqs }: RecruitClientProps) {
                     ))}
                 </div>
 
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-4xl mx-auto mb-32">
                     <motion.h2
                         initial={{ opacity: 0, y: 16 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -136,6 +137,73 @@ export default function RecruitClient({ initialFaqs }: RecruitClientProps) {
                         ))}
                     </div>
                 </div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="relative max-w-3xl mx-auto text-center py-24 px-6"
+                >
+                    {activeRecruitment ? (
+                        <>
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1f242c] border border-[#8CE0F4]/20 mb-8">
+                                <span className="relative flex h-2.5 w-2.5">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8CE0F4] opacity-60"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#8CE0F4]"></span>
+                                </span>
+                                <span className="text-xs font-semibold text-[#8CE0F4] tracking-wider uppercase">
+                                    Recruiting Now
+                                </span>
+                            </div>
+
+                            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+                                    {activeRecruitment.title}
+                                </span>
+                            </h2>
+
+                            <p className="text-lg text-white/40 mb-10">
+                                {new Date(activeRecruitment.start_date).toLocaleDateString()} ~{" "}
+                                {new Date(activeRecruitment.end_date).toLocaleDateString()}
+                            </p>
+
+                            <a
+                                href={activeRecruitment.application_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center px-10 py-4 bg-[#8CE0F4] text-black font-bold text-lg rounded-full hover:scale-105 hover:shadow-[0_0_40px_rgba(140,224,244,0.35)] transition-all duration-300"
+                            >
+                                지원하기
+                                <svg
+                                    className="w-5 h-5 ml-3 transition-transform hover:translate-x-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                </svg>
+                            </a>
+                        </>
+                    ) : (
+                        <>
+                            <h2 className="text-3xl font-bold mb-4 text-white/60">
+                                현재 모집 기간이 아닙니다.
+                            </h2>
+
+                            <p className="text-white/40 mb-10 leading-relaxed">
+                                다음 모집 소식을 기다려주세요.<br />
+                                인스타그램을 팔로우하시면 가장 빠르게 소식을 받아보실 수 있습니다.
+                            </p>
+
+                            <button
+                                disabled
+                                className="px-8 py-4 bg-white/5 text-white/30 font-semibold rounded-full cursor-not-allowed"
+                            >
+                                모집 준비 중
+                            </button>
+                        </>
+                    )}
+                </motion.div>
             </div>
         </main >
     );
