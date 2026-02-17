@@ -40,16 +40,16 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
 
     return (
         <main className="min-h-screen bg-[#0F1012] text-white selection:bg-[#8CE0F4]/30 overflow-x-hidden">
-            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-16 md:pt-32 pb-20 max-w-6xl">
+            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-32 pb-20 max-w-6xl">
                 <div className="mb-24 space-y-6 text-center md:text-left">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight items-center"
+                        className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight"
                     >
                         Join the{" "}
-                        <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#ADE6D2] via-[#A6C9D8] to-[#A1B3DD]">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd] drop-shadow-[0_0_30px_rgba(140,224,244,0.3)]">
                             Movement
                         </span>
                     </motion.h1>
@@ -156,13 +156,13 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                                 </span>
                             </div>
 
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                            <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
                                     {activeRecruitment.title}
                                 </span>
                             </h2>
 
-                            <p className="text-lg text-white/40 mb-10">
+                            <p className="text-base text-white/40 mb-10">
                                 {new Date(activeRecruitment.start_date).toLocaleDateString()} ~{" "}
                                 {new Date(activeRecruitment.end_date).toLocaleDateString()}
                             </p>
@@ -171,7 +171,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                                 href={activeRecruitment.application_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center px-10 py-4 bg-[#8CE0F4] text-black font-bold text-lg rounded-full hover:scale-105 hover:shadow-[0_0_40px_rgba(140,224,244,0.35)] transition-all duration-300"
+                                className="inline-flex items-center justify-center px-8 py-3 bg-[#8CE0F4] text-black font-bold text-lg rounded-full hover:scale-105 hover:shadow-[0_0_40px_rgba(140,224,244,0.35)] transition-all duration-300"
                             >
                                 지원하기
                                 <svg
