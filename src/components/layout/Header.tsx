@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -34,7 +35,11 @@ export default function Header() {
                 }`}
         >
             <div className="container mx-auto max-w-7xl px-6 md:px-10 flex items-center justify-between flex-nowrap h-full">
-                <Link href="/" className="group flex items-center gap-2 shrink-0">
+                <Link
+                    href="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="group flex items-center gap-2 shrink-0"
+                >
                     <img
                         src="/logo.png"
                         alt="Logo"
@@ -49,16 +54,10 @@ export default function Header() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`relative text-xs font-bold tracking-wide transition-colors duration-300 ${isActive ? "text-[#8CE0F4]" : "text-gray-400 hover:text-white"
+                                className={`text-xs font-bold tracking-wide transition-all duration-300 ${isActive ? "text-white scale-105" : "text-gray-400 hover:text-white hover:scale-105"
                                     }`}
                             >
                                 {link.name}
-                                {isActive && (
-                                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#8CE0F4] shadow-[0_0_8px_#8CE0F4]"></span>
-                                )}
-                                {!isActive && (
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white/50 transition-all duration-300 group-hover:w-full"></span>
-                                )}
                             </Link>
                         );
                     })}
@@ -87,12 +86,18 @@ export default function Header() {
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className={`px-6 py-4 text-sm font-bold transition-all border-l-4 ${isActive
-                                        ? "text-[#8CE0F4] bg-white/5 border-[#8CE0F4]"
-                                        : "text-gray-400 border-transparent hover:text-white hover:bg-white/5 hover:border-white/30"
+                                    className={`mx-4 my-1 px-6 py-4 rounded-xl text-sm font-bold transition-all duration-300 flex items-center justify-between ${isActive
+                                        ? "text-white bg-white/10"
+                                        : "text-gray-500 hover:text-white hover:bg-white/5"
                                         }`}
                                 >
                                     {link.name}
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="active-dot"
+                                            className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                                        />
+                                    )}
                                 </Link>
                             );
                         })}

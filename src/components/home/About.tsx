@@ -35,7 +35,7 @@ const roles = [
 
 export default function About({ className }: { className?: string }) {
     return (
-        <section className={`relative w-full py-24 bg-[#0F1012] border-t border-white/5 overflow-hidden ${className}`}>
+        <section className={`relative w-full py-24 bg-[#0F1012] overflow-hidden ${className}`}>
             <div className="container mx-auto max-w-7xl px-6 md:px-10 h-full flex flex-col justify-center relative z-10">
                 <div className="hidden xl:flex flex-row gap-16 items-center justify-between">
                     <div className="w-5/12 relative h-[460px] flex flex-col items-center justify-center">

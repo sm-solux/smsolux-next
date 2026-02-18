@@ -6,7 +6,7 @@ import { activities, stats } from "@/constants/about";
 
 export default function Introduce({ isSummary = false, className }: { isSummary?: boolean; className?: string }) {
     return (
-        <section className={`relative w-full bg-[#0F1012] border-t border-white/5 overflow-hidden flex flex-col justify-center ${isSummary ? "py-20" : "min-h-[80vh] py-24"} ${className}`}>
+        <section className={`relative w-full bg-[#0F1012] overflow-hidden flex flex-col justify-center ${isSummary ? "py-20" : "min-h-[80vh] py-24"} ${className}`}>
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8CE0F4]/5 rounded-full blur-[140px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#a1b3dd]/5 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
