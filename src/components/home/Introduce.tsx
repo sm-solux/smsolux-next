@@ -2,9 +2,64 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { activities, stats } from "@/constants/about";
+import { HomeActivity, HomeStat } from "@/types/home";
+import { FolderGit2, BookOpen, Presentation, Users } from "lucide-react";
 
-export default function Introduce({ isSummary = false, className }: { isSummary?: boolean; className?: string }) {
+// Fixed styling and icons for home activities
+const ActivityStyles: { [key: string]: { icon: React.ReactNode, accent: string, bg: string, border: string } } = {
+    project: {
+        icon: <FolderGit2 size={20} />,
+        accent: "text-[#8CE0F4]",
+        bg: "bg-[#8CE0F4]/10",
+        border: "border-[#8CE0F4]/20"
+    },
+    networking: {
+        icon: <Users size={20} />,
+        accent: "text-[#a1b3dd]",
+        bg: "bg-[#a1b3dd]/10",
+        border: "border-[#a1b3dd]/20"
+    },
+    study: {
+        icon: <BookOpen size={20} />,
+        accent: "text-[#ade6d2]",
+        bg: "bg-[#ade6d2]/10",
+        border: "border-[#ade6d2]/20"
+    },
+    seminar: {
+        icon: <Presentation size={20} />,
+        accent: "text-[#a6c9d8]",
+        bg: "bg-[#a6c9d8]/10",
+        border: "border-[#a6c9d8]/20"
+    }
+};
+
+interface IntroduceProps {
+    isSummary?: boolean;
+    className?: string;
+    initialActivities?: HomeActivity[];
+    initialStats?: HomeStat[];
+}
+
+export default function Introduce({
+    isSummary = false,
+    className,
+    initialActivities = [],
+    initialStats = []
+}: IntroduceProps) {
+    // Merge DB content with fixed styling
+    const displayActivities = initialActivities.map(dbActivity => {
+        const style = ActivityStyles[dbActivity.key] || ActivityStyles.project;
+        return {
+            key: dbActivity.key,
+            title: dbActivity.title,
+            desc: dbActivity.description,
+            icon: style.icon,
+            accent: style.accent,
+            accentBg: style.bg,
+            accentBorder: style.border
+        };
+    });
+
     return (
         <section className={`relative w-full bg-[#0F1012] overflow-hidden flex flex-col justify-center ${isSummary ? "py-20" : "min-h-[80vh] py-24"} ${className}`}>
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8CE0F4]/5 rounded-full blur-[140px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />
@@ -39,14 +94,14 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
                         </p>
 
                         <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-6">
-                            {stats.map((stat, idx) => (
+                            {initialStats.map((stat, idx) => (
                                 <motion.div
                                     key={stat.label}
                                     initial={{ opacity: 0, y: 12 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
-                                    className={idx < stats.length - 1 ? "border-r border-white/10 pr-4" : ""}
+                                    className={idx < initialStats.length - 1 ? "border-r border-white/10 pr-4" : ""}
                                 >
                                     <span className="block text-2xl font-black text-white">{stat.value}</span>
                                     <span className="text-xs text-gray-500 uppercase tracking-widest">{stat.label}</span>
@@ -56,7 +111,7 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
                     </motion.div>
 
                     <div className="w-full lg:w-6/12 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {activities.map((activity, idx) => (
+                        {displayActivities.map((activity, idx) => (
                             <motion.div
                                 key={activity.key}
                                 initial={{ opacity: 0, y: 20 }}

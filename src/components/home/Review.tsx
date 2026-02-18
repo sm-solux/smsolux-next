@@ -2,11 +2,16 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { reviews } from "@/constants/about";
+import { Review as ReviewType } from "@/types/home";
 import { Quote } from "lucide-react";
 
-export default function Review({ className }: { className?: string }) {
-    const duplicatedReviews = [...reviews, ...reviews, ...reviews, ...reviews];
+interface ReviewPageProps {
+    className?: string;
+    initialReviews?: ReviewType[];
+}
+
+export default function Review({ className, initialReviews = [] }: ReviewPageProps) {
+    const duplicatedReviews = [...initialReviews, ...initialReviews, ...initialReviews, ...initialReviews];
 
     return (
         <section className={`relative w-full min-h-screen py-24 bg-[#0F1012] overflow-hidden flex flex-col justify-center ${className}`}>
@@ -47,7 +52,7 @@ export default function Review({ className }: { className?: string }) {
                     {duplicatedReviews.map((review, idx) => (
                         <div
                             key={idx}
-                            className="flex-shrink-0 w-[280px] md:w-[350px] p-6 md:p-8 rounded-3xl bg-[#141518] border border-white/10 hover:border-[#8CE0F4]/30hover:-translate-y-2transition-all duration-50 relative group" >
+                            className="flex-shrink-0 w-[280px] md:w-[350px] p-6 md:p-8 rounded-3xl bg-[#141518] border border-white/10 hover:border-[#8CE0F4]/30 hover:-translate-y-2 transition-all duration-500 relative group" >
                             <Quote className="absolute top-6 right-6 w-10 h-10 group-hover:rotate-6 text-[#8CE0F4]/20 group-hover:text-[#8CE0F4]/50 transition-all duration-500" />
 
                             <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-8 break-keep min-h-[80px]">

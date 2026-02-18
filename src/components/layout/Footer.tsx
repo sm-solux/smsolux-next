@@ -1,7 +1,7 @@
 export default function Footer() {
     return (
         <footer className="bg-[#0F1012] w-full border-t border-white/5 py-8">
-            <div className="container mx-auto px-6 md:px-12 max-w-6xl flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div className="container mx-auto px-6 md:px-10 max-w-7xl flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div className="flex flex-col gap-2">
                     <p className="text-gray-500 text-xs">
                         &copy; 2026 SOLUX. All rights reserved.
