@@ -43,7 +43,7 @@ export default function JoinUs({ className }: { className?: string }) {
                             whileTap={{ scale: 0.95 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.6 }}
-                            className="group relative px-8 py-3 bg-white text-black text-md md:text-lg font-bold rounded-full transition-all shadow-lg hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:cursor-pointer"
+                            className="group relative px-8 py-3 bg-white text-black text-sm md:text-md font-bold rounded-full transition-all shadow-lg hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:cursor-pointer"
                         >
                             <span className="relative z-10 flex items-center gap-2">
                                 지금 지원하기
@@ -60,7 +60,7 @@ export default function JoinUs({ className }: { className?: string }) {
                             whileTap={{ scale: 0.95 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.7 }}
-                            className="px-8 py-3 bg-transparent border border-white/20 text-white text-md md:text-lg font-medium rounded-full transition-all hover:cursor-pointer"
+                            className="px-8 py-3 bg-transparent border border-white/20 text-white text-sm md:text-md font-medium rounded-full transition-all hover:cursor-pointer"
                         >
                             프로젝트 구경하기
                         </motion.button>
