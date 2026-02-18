@@ -72,7 +72,7 @@ export default function Hero({ className }: { className?: string }) {
                     className="mb-3"
                 >
                     <span
-                        className="block text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter font-montserrat"
+                        className="block text-8xl lg:text-9xl font-black text-white tracking-tighter font-montserrat"
                         style={{
                             textShadow: "0 0 40px rgba(140, 224, 244, 0.4)",
                             fontWeight: 900
@@ -93,10 +93,10 @@ export default function Hero({ className }: { className?: string }) {
                     </p>
 
                     <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                    <p className="text-lg text-gray-400 font-light leading-relaxed break-keep">
+                    <p className="text-md md:text-lg text-gray-400 font-light leading-relaxed break-keep">
                         <strong className="font-semibold text-white/90">상상을 현실로 —</strong><br />
-                        아이디어가 <strong>기획</strong>을 만나<br />
-                        <strong>디자인</strong>과 <strong>코드</strong>로 완성되는 곳.
+                        아이디어가 <strong className="font-bold">기획</strong>을 만나<br />
+                        <strong className="font-bold">디자인</strong>과 <strong className="font-bold">코드</strong>로 완성되는 곳.
                     </p>
                 </motion.div>
 

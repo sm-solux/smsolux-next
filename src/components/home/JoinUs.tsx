@@ -37,13 +37,16 @@ export default function JoinUs({ className }: { className?: string }) {
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6">
                     <Link href="/recruit">
                         <motion.button
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            whileHover={{ scale: 1.05 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            whileHover={{
+                                scale: 1.05,
+                                transition: { type: "spring", stiffness: 400, damping: 10 }
+                            }}
                             whileTap={{ scale: 0.95 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.6 }}
-                            className="group relative px-8 py-3 bg-white text-black text-sm md:text-md font-bold rounded-full transition-all shadow-lg hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:cursor-pointer"
+                            className="group relative px-8 py-3 bg-white text-black text-sm md:text-md font-bold rounded-full shadow-lg hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-shadow duration-300 hover:cursor-pointer"
                         >
                             <span className="relative z-10 flex items-center gap-2">
                                 지금 지원하기
@@ -54,13 +57,17 @@ export default function JoinUs({ className }: { className?: string }) {
 
                     <Link href="/project">
                         <motion.button
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            whileHover={{
+                                scale: 1.05,
+                                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                transition: { type: "spring", stiffness: 400, damping: 10 }
+                            }}
                             whileTap={{ scale: 0.95 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.3, delay: 0.7 }}
-                            className="px-8 py-3 bg-transparent border border-white/20 text-white text-sm md:text-md font-medium rounded-full transition-all hover:cursor-pointer"
+                            className="px-8 py-3 bg-transparent border border-white/20 text-white text-sm md:text-md font-medium rounded-full hover:cursor-pointer"
                         >
                             프로젝트 구경하기
                         </motion.button>
