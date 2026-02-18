@@ -30,7 +30,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                         transition={{ duration: 0.6 }}
                         className="text-4xl md:text-5xl font-black text-white mb-3 leading-tight tracking-tight"
                     >
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd] drop-shadow-[0_0_30px_rgba(140,224,244,0.3)]">
+                        <span className="text-transparent bg-clip-text bg-primary">
                             Apply Now
                         </span>
                     </motion.h1>
@@ -176,7 +176,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                                 현재 모집 기간이 아닙니다
                             </h2>
 
-                            <p className="text-white/40 mb-12 leading-relaxed text-sm md:text-base break-keep">
+                            <p className="text-sm text-white/40 break-keep mb-12">
                                 다음 모집 소식을 기다려주세요.<br />
                                 인스타그램을 팔로우하시면 가장 빠르게 소식을 받아보실 수 있습니다.
                             </p>
