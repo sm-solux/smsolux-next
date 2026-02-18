@@ -68,11 +68,10 @@ export default function Hero({ className }: { className?: string }) {
                     className="mb-3"
                 >
                     <span
-                        className="block text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter"
+                        className="block text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter font-montserrat"
                         style={{
                             textShadow: "0 0 40px rgba(140, 224, 244, 0.4)",
-                            fontWeight: 900,
-                            fontFamily: 'var(--font-montserrat), sans-serif'
+                            fontWeight: 900
                         }}
                     >
                         SOLUX
@@ -85,7 +84,7 @@ export default function Hero({ className }: { className?: string }) {
                     transition={{ duration: 0.8, delay: 0.6 }}
                     className="max-w-3xl flex flex-col items-center gap-6"
                 >
-                    <p className="text-lg md:text-xl text-white font-bold tracking-tight break-keep bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200">
+                    <p className="text-lg md:text-xl text-white font-semibold tracking-tight break-keep bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200">
                         숙명여자대학교 유일 <br className="md:hidden" />프로그래밍 중앙 동아리
                     </p>
 

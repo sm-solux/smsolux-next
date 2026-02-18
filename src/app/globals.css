@@ -7,7 +7,15 @@
 }
 
 @theme {
+  --color-primary: var(--primary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --font-montserrat: var(--font-montserrat);
+  --font-noto: var(--font-noto-sans-kr);
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,7 +29,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-montserrat), sans-serif !important;
+  font-family: var(--font-noto-sans-kr), var(--font-montserrat), sans-serif !important;
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
 }

@@ -93,7 +93,7 @@ export default function Introduce({
                             <strong className="text-white/80">더 넓은 세상의 가능성</strong>을 함께 만들어갑니다.
                         </p>
 
-                        <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-6">
+                        <div className="pt-6 grid grid-cols-3 gap-6">
                             {initialStats.map((stat, idx) => (
                                 <motion.div
                                     key={stat.label}
