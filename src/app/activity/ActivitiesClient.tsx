@@ -40,7 +40,7 @@ export default function ActivitiesClient({ initialActivities }: ActivitiesClient
                         className="text-4xl md:text-5xl font-black text-white mb-3 leading-tight tracking-tight items-center"
                     >
                         Life at{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">
+                        <span className="text-transparent bg-clip-text bg-primary">
                             SOLUX
                         </span>
                     </motion.h1>

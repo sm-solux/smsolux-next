@@ -36,7 +36,6 @@ const roles = [
 export default function About({ className }: { className?: string }) {
     return (
         <section className={`relative w-full py-24 bg-[#0F1012] border-t border-white/5 overflow-hidden ${className}`}>
-            <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#ade6d2]/5 rounded-full blur-[130px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
             <div className="container mx-auto px-6 md:px-8 xl:px-24 h-full flex flex-col justify-center relative z-10">
                 <div className="hidden xl:flex flex-row gap-16 items-center justify-between">
                     <div className="w-5/12 relative h-[460px] flex flex-col items-center justify-center">
@@ -94,7 +93,7 @@ export default function About({ className }: { className?: string }) {
                         </motion.div>
                     </div>
 
-                    <div className="w-6/12 space-y-8">
+                    <div className="w-6/12 space-y-8 flex items-center justify-center">
                         <TextContent />
                     </div>
                 </div>
@@ -164,19 +163,11 @@ function TextContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="space-y-4"
+                className="space-y-4 flex flex-col items-end"
             >
-                <span className="text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
+                <span className="inline-block text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
                     Who We Are
                 </span>
-                {/* <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
-                    Beyond Lines of Code,{" "}
-                    <br />
-                    We Bring{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">
-                        Ideas to Life.
-                    </span>
-                </h2> */}
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
                     Beyond Lines of Code,{" "}
                     <br />
@@ -192,7 +183,7 @@ function TextContent() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-gray-400 leading-relaxed text-base md:text-lg"
+                className="text-gray-400 leading-relaxed text-base md:text-lg flex flex-col items-end text-right"
             >
                 <p className="break-keep">
                     <span className="text-[#ade6d2] font-semibold">기획자</span>,

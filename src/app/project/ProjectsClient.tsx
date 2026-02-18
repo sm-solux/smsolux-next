@@ -22,7 +22,7 @@ export default function ProjectsClient({ initialArchives }: ProjectsClientProps)
                         className="text-4xl md:text-5xl font-black text-white mb-3 leading-tight tracking-tight"
                     >
                         Made in{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd] drop-shadow-[0_0_30px_rgba(140,224,244,0.3)]">
+                        <span className="text-transparent bg-clip-text bg-primary">
                             SOLUX
                         </span>
                     </motion.h1>

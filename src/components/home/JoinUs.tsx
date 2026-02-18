@@ -16,7 +16,7 @@ export default function JoinUs({ className }: { className?: string }) {
                     className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight tracking-tight"
                 >
                     Ready to <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd] drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                    <span className="text-transparent bg-clip-text bg-primary">
                         Make it Real?
                     </span>
                 </motion.h2>

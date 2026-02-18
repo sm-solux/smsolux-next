@@ -24,9 +24,9 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
                                 About SOLUX
                             </span>
                             <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-[1.15] tracking-tight">
-                                숙명여대 유일의{" "}
+                                숙명여대 유일의
                                 <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">
+                                <span className="text-transparent bg-clip-text bg-primary">
                                     프로그래밍 중앙 동아리
                                 </span>
                             </h2>

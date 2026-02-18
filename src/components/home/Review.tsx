@@ -16,14 +16,18 @@ export default function Review({ className }: { className?: string }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="text-center md:text-left"
+                    className="text-left space-y-4"
                 >
-                    <span className="text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
+                    <span className="inline-block text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
                         SOLUX Reviews
                     </span>
-                    <h2 className="mt-4 text-3xl md:text-4xl font-black text-white leading-tight tracking-tight">
-                        솔룩스와 함께한 <br />
-                        부원들의 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">진솔한 이야기</span>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-[1.15] tracking-tight">
+                        솔룩스와 함께한
+                        <br />
+                        부원들의{" "}
+                        <span className="text-transparent bg-clip-text bg-primary">
+                            진솔한 이야기
+                        </span>
                     </h2>
                 </motion.div>
             </div>
