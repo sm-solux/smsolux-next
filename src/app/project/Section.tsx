@@ -34,13 +34,14 @@ export const GenerationSection = ({ archive }: { archive: GenerationArchive }) =
             </div>
 
             <div className="space-y-8 md:space-y-12">
-
-                <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4 md:mb-6 flex items-center gap-2">
-                    <Calendar size={16} className="text-[#8CE0F4]" />
-                    {archive.semesters[0].term}
-                </h3>
                 {archive.semesters.map((semester, idx) => (
-                    <SemesterSection key={idx} semester={semester} />
+                    <div key={idx}>
+                        <h3 className="text-lg md:text-xl font-semibold text-gray-300 mb-4 md:mb-6 flex items-center gap-2">
+                            <Calendar size={16} className="text-[#8CE0F4]" />
+                            {semester.term}
+                        </h3>
+                        <SemesterSection semester={semester} />
+                    </div>
                 ))}
             </div>
         </motion.div>
