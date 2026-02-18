@@ -44,3 +44,90 @@ export const stats = [
     { value: "500+", label: "Alumni" },
     { value: "100+", label: "Projects" },
 ];
+
+export const reviews = [
+    {
+        name: "김**",
+        gen: "29기",
+        part: "Planner",
+        content: "팀장의 책임과 역량이 프로젝트에 미치는 영향을 깨달았어요.",
+    },
+    {
+        name: "이**",
+        gen: "29기",
+        part: "Planner",
+        content: "게임 기획자로서의 확신을 얻었어요.",
+    },
+    {
+        name: "이**",
+        gen: "29기",
+        part: "Designer",
+        content: "기획과 UX 플로우에 대한 여러 가지 의견을 덧붙이며, 완전히 다른 사람들의 생각을 들어보고 협업할 수 있는 기회를 얻었어요.",
+    },
+    {
+        name: "김**",
+        gen: "29기",
+        part: "Frontend Developer",
+        content: "서비스 개발에 흥미가 있는 저학년이나 프로젝트 경험이 필요한 고학년에게 좋은 기회를 제공하는 동아리라고 생각해요.",
+    },
+    {
+        name: "한**",
+        gen: "29기",
+        part: "Backend Developer",
+        content: "열정적인 부원분들에게 에너지와 동기부여를 받아, 시도하고 싶은 걸 실행으로 옮기기에 아주 좋은 동아리예요.",
+    },
+    {
+        name: "최**",
+        gen: "29기",
+        part: "Game Developer",
+        content: "일년 간 2번의 프로젝트를 진행하며 더욱 빨리 성장할 수 있었어요.",
+    },
+    {
+        name: "백**",
+        gen: "30기",
+        part: "Backend Developer",
+        content: "여러 세미나를 통해 프로젝트에서 더 체계적이고, 명확한 개발을 진행할 수 있었어요.",
+    },
+    {
+        name: "최**",
+        gen: "30기",
+        part: "Planner",
+        content: "숙명인과의 유대감으로 똘똘 뭉친 솔룩스에서, 팔로워십을 갖춘 리더가 될 수 있게 변화했어요.",
+    },
+    {
+        name: "송**",
+        gen: "30기",
+        part: "Frontend Developer",
+        content: "다양한 언어를 도구삼아 프로젝트를 모두 성공적으로 마무리했다는 자신감을 얻었어요.",
+    },
+    {
+        name: "문**",
+        gen: "30기",
+        part: "Backend Developer",
+        content: "개발 시작 전, 고려 사항을 미리 파악하고 개발하는 것의 중요성을 깨달았어요.",
+    },
+    {
+        name: "홍**",
+        gen: "30기",
+        part: "Backend Developer",
+        content: "팀원들에게 생각을 공유하고 의견을 경청하는 과정에서 방식과 태도를 배웠어요.",
+    },
+    {
+        name: "박**",
+        gen: "30기",
+        part: "Game Developer",
+        content: "솔룩스에서 두 번의 게임 프로젝트를 진행하며 게임 개발에 대한 흥미를 느꼈어요.",
+    },
+    {
+        name: "박**",
+        gen: "30기",
+        part: "Planner",
+        content: "기획자와 디자이너의 역할이 명확하게 구분되어 있는 솔룩스에서, 체계적인 협업을 경험하며 많은 것들을 배웠어요.",
+    },
+    {
+        name: "김**",
+        gen: "30기",
+        part: "Frontend Developer",
+        content: "다양한 프레임워크로 프로젝트를 진행하며 함께 개발하는 즐거움을 배웠어요.",
+    },
+];
