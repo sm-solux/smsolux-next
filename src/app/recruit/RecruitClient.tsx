@@ -69,7 +69,8 @@ export default function RecruitClient({ initialFaqs, activeRecruitment, initialC
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                                className={`relative p-8 rounded-3xl bg-gradient-to-b ${style.gradient} border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.4)]`}>
+                                className="relative p-8 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.06] hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+                            >
                                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/5 backdrop-blur-sm border border-white/10">
                                     {style.icon}
                                 </div>
