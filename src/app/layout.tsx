@@ -23,8 +23,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/thumbnail.png",
-        width: 800,
-        height: 600,
+        width: 1898,
+        height: 866,
         alt: "Page Thumbnail",
       },
     ],
@@ -33,17 +33,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+import { supabase } from "@/lib/supabase";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { data: footerLinks } = await supabase
+    .from('footer_links')
+    .select('*')
+    .order('order_index', { ascending: true });
+
   return (
     <html lang="ko">
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <Header />
         {children}
-        <Footer />
+        <Footer initialLinks={footerLinks || []} />
       </body>
     </html>
   );
