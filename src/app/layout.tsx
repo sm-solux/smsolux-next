@@ -6,19 +6,20 @@ import Footer from "@/components/layout/Footer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["700", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-montserrat",
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: "SOLUX - 숙명여자대학교 개발 동아리",
-  description: "숙명여자대학교 유일 중앙 프로그래밍 동아리 SOLUX입니다.",
+  description: "숙명여자대학교 유일 프로그래밍 중앙 동아리 SOLUX입니다.",
   icons: {
     icon: "/logo.png",
   },
   openGraph: {
     title: "SOLUX - 숙명여자대학교 개발 동아리",
-    description: "숙명여자대학교 유일 중앙 프로그래밍 동아리 SOLUX입니다.",
+    description: "숙명여자대학교 유일 프로그래밍 중앙 동아리 SOLUX입니다.",
     siteName: "SOLUX",
     images: [
       {
@@ -47,7 +48,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body className={`${montserrat.variable} font-sans antialiased`}>
+      <body className={`${montserrat.variable} antialiased`}>
         <Header />
         {children}
         <Footer initialLinks={footerLinks || []} />

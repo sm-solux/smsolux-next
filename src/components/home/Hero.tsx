@@ -70,7 +70,9 @@ export default function Hero({ className }: { className?: string }) {
                     <span
                         className="block text-7xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter"
                         style={{
-                            textShadow: "0 0 40px rgba(140, 224, 244, 0.4)"
+                            textShadow: "0 0 40px rgba(140, 224, 244, 0.4)",
+                            fontWeight: 900,
+                            fontFamily: 'var(--font-montserrat), sans-serif'
                         }}
                     >
                         SOLUX
@@ -83,8 +85,8 @@ export default function Hero({ className }: { className?: string }) {
                     transition={{ duration: 0.8, delay: 0.6 }}
                     className="max-w-3xl flex flex-col items-center gap-6"
                 >
-                    <p className="text-xl md:text-2xl text-white font-bold tracking-tight break-keep bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200">
-                        숙명여자대학교 유일 중앙 프로그래밍 동아리
+                    <p className="text-lg md:text-xl text-white font-bold tracking-tight break-keep bg-clip-text bg-gradient-to-br from-white via-blue-50 to-blue-200">
+                        숙명여자대학교 유일 <br className="md:hidden" />프로그래밍 중앙 동아리
                     </p>
 
                     <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
