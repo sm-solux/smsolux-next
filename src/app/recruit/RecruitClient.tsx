@@ -6,6 +6,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Faq, RecruitmentNotice } from "@/types/recruit";
 
 import { coreValues } from "@/constants/recruit";
+import { formatDateTimeRange } from "@/utils/date";
 
 interface RecruitClientProps {
     initialFaqs: Faq[];
@@ -21,7 +22,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
 
     return (
         <main className="min-h-screen bg-[#0F1012] text-white selection:bg-[#8CE0F4]/30 overflow-x-hidden">
-            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-32 pb-20 max-w-6xl">
+            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-32 pb-10 max-w-6xl">
                 <div className="mb-24 space-y-6 text-center md:text-left">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -122,62 +123,67 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="relative max-w-3xl mx-auto text-center py-24 px-6"
+                    className="relative max-w-3xl mx-auto text-center py-30 px-6"
                 >
                     {activeRecruitment ? (
                         <>
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1f242c] border border-[#8CE0F4]/20 mb-8">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#8CE0F4]/10 border border-[#8CE0F4]/20 mb-10">
                                 <span className="relative flex h-2.5 w-2.5">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8CE0F4] opacity-60"></span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8CE0F4] opacity-50"></span>
                                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#8CE0F4]"></span>
                                 </span>
-                                <span className="text-xs font-semibold text-[#8CE0F4] tracking-wider uppercase">
+                                <span className="text-[11px] font-bold text-[#8CE0F4] tracking-[0.15em] uppercase">
                                     Recruiting Now
                                 </span>
                             </div>
 
-                            <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+                            <h2 className="text-3xl md:text-4xl font-extrabold mb-6 leading-tight tracking-[-0.02em] text-white">
+                                <span className="drop-shadow-[0_0_20px_rgba(255,255,255,0.08)]">
                                     {activeRecruitment.title}
                                 </span>
                             </h2>
 
-                            <p className="text-base text-white/40 mb-10">
-                                {new Date(activeRecruitment.start_date).toLocaleDateString()} ~{" "}
-                                {new Date(activeRecruitment.end_date).toLocaleDateString()}
-                            </p>
+
+                            <div className="mb-12">
+                                <p className="text-lg md:text-xl text-white/80 font-medium tracking-tight mb-4">
+                                    {formatDateTimeRange(activeRecruitment.start_date, activeRecruitment.end_date)}
+                                </p>
+                                <p className="text-sm text-white/40 break-keep">
+                                    숙명여자대학교 계정으로만 지원이 가능합니다.
+                                </p>
+                            </div>
 
                             <a
                                 href={activeRecruitment.application_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center px-8 py-3 bg-[#8CE0F4] text-black font-bold text-lg rounded-full hover:scale-105 hover:shadow-[0_0_40px_rgba(140,224,244,0.35)] transition-all duration-300"
+                                className="inline-flex items-center justify-center px-8 py-3 bg-[#8CE0F4] text-black text-sm md:text-base font-bold rounded-full hover:scale-105 hover:shadow-[0_0_50px_rgba(140,224,244,0.3)] active:scale-95 transition-all duration-300 group"
                             >
                                 지원하기
                                 <svg
-                                    className="w-5 h-5 ml-3 transition-transform hover:translate-x-1"
+                                    className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1"
                                     fill="none"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                                 </svg>
                             </a>
                         </>
                     ) : (
                         <>
-                            <h2 className="text-3xl font-bold mb-4 text-white/60">
-                                현재 모집 기간이 아닙니다.
+                            <h2 className="text-3xl font-bold mb-6 text-white/60 tracking-tight">
+                                현재 모집 기간이 아닙니다
                             </h2>
 
-                            <p className="text-white/40 mb-10 leading-relaxed">
+                            <p className="text-white/40 mb-12 leading-relaxed text-sm md:text-base break-keep">
                                 다음 모집 소식을 기다려주세요.<br />
                                 인스타그램을 팔로우하시면 가장 빠르게 소식을 받아보실 수 있습니다.
                             </p>
 
                             <button
                                 disabled
-                                className="px-8 py-4 bg-white/5 text-white/30 font-semibold rounded-full cursor-not-allowed"
+                                className="px-8 py-3 bg-white/5 text-white/20 text-sm md:text-md font-medium rounded-full cursor-not-allowed border border-white/5"
                             >
                                 모집 준비 중
                             </button>
