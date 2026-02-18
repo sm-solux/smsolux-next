@@ -88,10 +88,10 @@ export default function Hero({ className }: { className?: string }) {
                     </p>
 
                     <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                    <p className="text-lg text-gray-400 font-semilight leading-relaxed break-keep">
-                        기획, 디자인, 개발이 <span className="text-white font-medium">한 팀</span>으로 만나
-                        <br />
-                        아이디어를 실제 서비스로 만들어가는 곳.
+                    <p className="text-lg text-gray-400 font-light leading-relaxed break-keep">
+                        <strong className="font-semibold">상상을 현실로 —</strong><br />
+                        아이디어가 <strong>기획</strong>을 만나<br />
+                        <strong>디자인</strong>과 <strong>코드</strong>로 완성되는 곳.
                     </p>
                 </motion.div>
 

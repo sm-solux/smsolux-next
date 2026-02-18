@@ -34,10 +34,10 @@ export function AboutText() {
                 className="text-gray-400 leading-relaxed text-base md:text-lg"
             >
                 <p className="break-keep">
-                    <span className="text-[#ade6d2] font-semibold">기획자</span>,
-                    <span className="text-[#a6c9d8] font-semibold"> 디자이너</span>,
-                    <span className="text-[#a1b3dd] font-semibold"> 개발자</span>가
-                    <strong className="text-white"> 한 팀</strong>이 되어
+                    <strong className="text-white/80">기획자</strong>,
+                    <strong className="text-white/80"> 디자이너</strong>,
+                    <strong className="text-white/80"> 개발자</strong>가
+                    <strong className="text-white/80"> 한 팀</strong>이 되어
                     <br />
                     상상 속의 아이디어를 실제 돌아가는 프로덕트로 완성합니다.
                 </p>

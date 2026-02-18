@@ -24,16 +24,20 @@ export default function Review({ className, initialReviews = [] }: ReviewPagePro
                     className="text-left space-y-4"
                 >
                     <span className="inline-block text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
-                        SOLUX Reviews
+                        Where Growth Begins
                     </span>
                     <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-[1.15] tracking-tight">
-                        솔룩스와 함께한
+                        솔룩스와 함께하며 발견한
                         <br />
-                        부원들의{" "}
                         <span className="text-transparent bg-clip-text bg-primary">
-                            진솔한 이야기
+                            가능성의 기록
                         </span>
                     </h2>
+
+                    <p className="text-gray-400 leading-relaxed text-base md:text-lg break-keep">
+                        솔룩스에서 시작된 도전은 <br className="md:hidden" />
+                        <strong className="text-white/80">송이들의 성장</strong>으로 이어집니다.
+                    </p>
                 </motion.div>
             </div>
 

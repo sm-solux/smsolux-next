@@ -90,7 +90,7 @@ export default function Introduce({
                         <p className="text-gray-400 leading-relaxed text-base md:text-lg break-keep">
                             소프트웨어학부 리눅스 학회에서 출발해,<br />
                             이제는 전공을 넘은 다양한 분야의 학우들이 모여<br />
-                            <strong className="text-white">더 넓은 세상의 가능성</strong>을 함께 만들어갑니다.
+                            <strong className="text-white/80">더 넓은 세상의 가능성</strong>을 함께 만들어갑니다.
                         </p>
 
                         <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-6">
