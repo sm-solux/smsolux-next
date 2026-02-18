@@ -121,13 +121,11 @@ export default function About({ className }: { className?: string }) {
                         ))}
                     </div>
 
-                    {/* 오른쪽: 텍스트 */}
                     <div className="flex-1 space-y-8">
                         <TextContent />
                     </div>
                 </div>
 
-                {/* ── 모바일: 텍스트 위 + 카드 아래 세로 ── */}
                 <div className="flex md:hidden flex-col gap-10">
                     <TextContent />
                     <div className="flex flex-col gap-3">
@@ -171,11 +169,19 @@ function TextContent() {
                 <span className="text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
                     Who We Are
                 </span>
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+                {/* <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
                     Beyond Lines of Code,{" "}
                     <br />
                     We Bring{" "}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">
+                        Ideas to Life.
+                    </span>
+                </h2> */}
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+                    Beyond Lines of Code,{" "}
+                    <br />
+                    We Bring{" "}
+                    <span className="text-transparent bg-clip-text bg-primary">
                         Ideas to Life.
                     </span>
                 </h2>
@@ -194,7 +200,7 @@ function TextContent() {
                     <span className="text-[#a1b3dd] font-semibold"> 개발자</span>가
                     <strong className="text-white"> 한 팀</strong>이 되어
                     <br />
-                    상상 속의 아이디어를 실제 돌아가는 프로덕트로 완성합니다.
+                    상상 속의 아이디어를 실제 돌아가는 프로덕트로
                 </p>
             </motion.div>
         </div>

@@ -23,7 +23,7 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
                             <span className="inline-block text-[#8CE0F4] text-xs font-bold tracking-widest uppercase border-b border-[#8CE0F4]/30 pb-1">
                                 About SOLUX
                             </span>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-[1.15] tracking-tight">
+                            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white leading-[1.15] tracking-tight">
                                 숙명여대 유일의{" "}
                                 <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">
@@ -34,10 +34,8 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
 
                         <p className="text-gray-400 leading-relaxed text-base md:text-lg break-keep">
                             소프트웨어학부 리눅스 학회에서 출발해,<br />
-                            웹·아두이노·빅데이터까지 영역을 넓혀온 솔룩스.
-                            <br />
-                            전공과 관심사가 다른 학우들이 모여
-                            <strong className="text-white"> 프로젝트·스터디·세미나</strong>를 함께 만들어갑니다.
+                            이제는 전공을 넘은 다양한 분야의 학우들이 모여<br />
+                            <strong className="text-white">더 넓은 세상의 가능성</strong>을 함께 만들어갑니다.
                         </p>
 
                         <div className="pt-6 border-t border-white/10 grid grid-cols-3 gap-6">
@@ -57,7 +55,6 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
                         </div>
                     </motion.div>
 
-                    {/* 오른쪽: 활동 카드 2×2 */}
                     <div className="w-full lg:w-6/12 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {activities.map((activity, idx) => (
                             <motion.div
@@ -68,7 +65,6 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
                                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                                 className={`group relative p-6 rounded-2xl bg-white/[0.03] border ${activity.accentBorder} hover:bg-white/[0.06] transition-all duration-300 hover:-translate-y-1`}
                             >
-                                {/* 호버 글로우 */}
                                 <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${activity.accentBg} pointer-events-none`} />
 
                                 <div className={`w-11 h-11 rounded-xl ${activity.accentBg} border ${activity.accentBorder} flex items-center justify-center mb-4 ${activity.accent} group-hover:scale-110 transition-transform duration-300`}>
