@@ -36,7 +36,7 @@ const roles = [
 export default function About({ className }: { className?: string }) {
     return (
         <section className={`relative w-full py-24 bg-[#0F1012] border-t border-white/5 overflow-hidden ${className}`}>
-            <div className="container mx-auto px-6 md:px-8 xl:px-24 h-full flex flex-col justify-center relative z-10">
+            <div className="container mx-auto max-w-7xl px-6 md:px-10 h-full flex flex-col justify-center relative z-10">
                 <div className="hidden xl:flex flex-row gap-16 items-center justify-between">
                     <div className="w-5/12 relative h-[460px] flex flex-col items-center justify-center">
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -93,7 +93,7 @@ export default function About({ className }: { className?: string }) {
                         </motion.div>
                     </div>
 
-                    <div className="w-6/12 space-y-8 flex items-center justify-center">
+                    <div className="w-6/12 space-y-8 flex items-center justify-end">
                         <TextContent />
                     </div>
                 </div>

@@ -51,7 +51,7 @@ export default function Hero({ className }: { className?: string }) {
                 className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"
             />
 
-            <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center">
+            <div className="relative z-10 container mx-auto max-w-7xl px-6 md:px-10 flex flex-col items-center text-center">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}

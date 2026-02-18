@@ -33,7 +33,7 @@ export default function Header() {
                 : "bg-transparent py-4"
                 }`}
         >
-            <div className="container mx-auto max-w-6xl px-6 md:px-12 flex items-center justify-between flex-nowrap h-full">
+            <div className="container mx-auto max-w-7xl px-6 md:px-10 flex items-center justify-between flex-nowrap h-full">
                 <Link href="/" className="group flex items-center gap-2 shrink-0">
                     <img
                         src="/logo.png"

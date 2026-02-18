@@ -13,7 +13,7 @@ interface ProjectsClientProps {
 export default function ProjectsClient({ initialArchives }: ProjectsClientProps) {
     return (
         <main className="min-h-screen bg-[#0F1012] text-white selection:bg-[#8CE0F4]/30 overflow-x-hidden">
-            <div className="relative z-10 container mx-auto px-6 md:px-12 pt-32 pb-20 max-w-6xl">
+            <div className="relative z-10 container mx-auto px-6 md:px-10 pt-32 pb-20 max-w-7xl">
                 <div className="mb-24 space-y-6 text-center md:text-left">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}

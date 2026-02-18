@@ -10,7 +10,7 @@ export default function Introduce({ isSummary = false, className }: { isSummary?
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#8CE0F4]/5 rounded-full blur-[140px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#a1b3dd]/5 rounded-full blur-[120px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
-            <div className="container mx-auto px-6 md:px-24 relative z-10">
+            <div className="container mx-auto max-w-7xl px-6 md:px-10 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start lg:items-center justify-between">
                     <motion.div
                         initial={{ opacity: 0, y: 24 }}
