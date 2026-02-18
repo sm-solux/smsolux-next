@@ -1,5 +1,19 @@
 import { Project } from "@/types/project";
 
+const AWARD_ORDER: Record<string, number> = {
+    "대상": 0,
+    "최우수상": 1,
+    "우수상": 2,
+    "장려상": 3,
+};
+
+const getAwardRank = (award: string): number => {
+    for (const [key, rank] of Object.entries(AWARD_ORDER)) {
+        if (award.includes(key)) return rank;
+    }
+    return 99;
+};
+
 export const transformData = (flatData: any[]) => {
     const groupedByGen = flatData.reduce((acc, project) => {
         const { generation, year, term } = project;
@@ -25,16 +39,20 @@ export const transformData = (flatData: any[]) => {
                 .reverse()
                 .map((term) => ({
                     term,
-                    projects: group.semesters[term].map((p: any): Project => ({
-                        title: p.title,
-                        teamName: p.team_name,
-                        desc: p.desc,
-                        award: p.award || "",
-                        category: p.category,
-                        stacks: p.stacks || [],
-                        image: p.image || "",
-                        link: p.link || "",
-                    })),
+                    projects: group.semesters[term]
+                        .map((p: any): Project => ({
+                            title: p.title,
+                            teamName: p.team_name,
+                            desc: p.desc,
+                            award: p.award || "",
+                            category: p.category,
+                            stacks: p.stacks || [],
+                            image: p.image || "",
+                            link: p.link || "",
+                        }))
+                        .sort((a: Project, b: Project) =>
+                            getAwardRank(a.award ?? "") - getAwardRank(b.award ?? "")
+                        ),
                 })),
         }));
 };
