@@ -27,11 +27,10 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight"
+                        className="text-4xl md:text-5xl font-black text-white mb-3 leading-tight tracking-tight"
                     >
-                        Join the{" "}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd] drop-shadow-[0_0_30px_rgba(140,224,244,0.3)]">
-                            Movement
+                            Apply Now
                         </span>
                     </motion.h1>
 
@@ -41,7 +40,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-white/50 text-base md:text-lg max-w-xl leading-relaxed break-keep mx-auto md:mx-0"
                     >
-                        상상을 현실로 만드는 여정에 함께하세요.
+                        솔룩스의 다음 챕터를 함께 써 내려갈, 당신의 열정을 기다립니다.
                     </motion.p>
                 </div>
 

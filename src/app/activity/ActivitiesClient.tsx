@@ -37,11 +37,11 @@ export default function ActivitiesClient({ initialActivities }: ActivitiesClient
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight items-center"
+                        className="text-4xl md:text-5xl font-black text-white mb-3 leading-tight tracking-tight items-center"
                     >
-                        What We&nbsp;
+                        Life at{" "}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ade6d2] via-[#a6c9d8] to-[#a1b3dd]">
-                            Do
+                            SOLUX
                         </span>
                     </motion.h1>
                     <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -51,7 +51,7 @@ export default function ActivitiesClient({ initialActivities }: ActivitiesClient
                             transition={{ duration: 0.6, delay: 0.2 }}
                             className="text-white/50 text-base md:text-lg max-w-xl leading-relaxed break-keep mx-auto md:mx-0"
                         >
-                            솔룩스의 1년은 몰입과 성장의 시간으로 가득 차 있습니다.
+                            정기 세미나부터 네트워킹까지, 솔룩스만의 다양한 활동들을 확인해보세요.
                         </motion.p>
 
                         <motion.div
@@ -64,12 +64,10 @@ export default function ActivitiesClient({ initialActivities }: ActivitiesClient
                                 href="https://solux.tistory.com/category"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group inline-flex items-center gap-1 text-white/60 hover:text-[#8CE0F4] text-sm transition-colors duration-200"
+                                className="group inline-flex items-center gap-1 text-white/70 hover:text-[#8CE0F4] text-xs md:text-sm font-medium transition-colors duration-200"
                             >
-                                <span className="text-white/80 group-hover:text-[#8CE0F4] font-medium text-xs md:text-sm tracking-wide transition-colors">
-                                    솔룩스의 더 많은 기록 보기
-                                </span>
-                                <ArrowUpRight className="w-4 h-4 text-white/50 group-hover:text-[#8CE0F4] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300" />
+                                더 많은 기록 보기
+                                <ArrowUpRight className="w-4 h-4 opacity-60 group-hover:opacity-100 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all duration-200" />
                             </Link>
                         </motion.div>
                     </div>
