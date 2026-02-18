@@ -55,7 +55,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body className={`${montserrat.variable} ${notoSansKr.variable} antialiased`}>
+      <body className={`${montserrat.variable} ${notoSansKr.variable} bg-background text-white antialiased`}>
         <Header />
         {children}
         <Footer initialLinks={footerLinks || []} />
