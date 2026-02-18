@@ -1,10 +1,27 @@
 export const formatDateTime = (date: Date | string | number) => {
     const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const hours = String(d.getHours()).padStart(2, '0');
-    const minutes = String(d.getMinutes()).padStart(2, '0');
+    if (isNaN(d.getTime())) return "";
+
+    const options: Intl.DateTimeFormatOptions = {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    };
+
+    const formatter = new Intl.DateTimeFormat('ko-KR', options);
+    const parts = formatter.formatToParts(d);
+
+    const getPart = (type: string) => parts.find(p => p.type === type)?.value || "";
+
+    const year = getPart('year');
+    const month = getPart('month');
+    const day = getPart('day');
+    const hours = getPart('hour');
+    const minutes = getPart('minute');
 
     return `${year}.${month}.${day} ${hours}:${minutes}`;
 };
