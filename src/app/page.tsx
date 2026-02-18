@@ -10,7 +10,7 @@ export default async function Home() {
   return (
     <main className="flex flex-col w-full snap-y snap-mandatory text-white no-scrollbar scroll-smooth">
       <Hero className="snap-start shrink-0" />
-      {/* <Introduce className="snap-start shrink-0" /> */}
+      <Introduce className="snap-start shrink-0" />
       <About className="snap-start shrink-0" />
       <JoinUs className="snap-start shrink-0" />
     </main>
