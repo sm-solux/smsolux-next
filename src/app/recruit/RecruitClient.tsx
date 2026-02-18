@@ -2,18 +2,32 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { Faq, RecruitmentNotice } from "@/types/recruit";
-
-import { coreValues } from "@/constants/recruit";
+import { ChevronDown, ChevronUp, TrendingUp, Users, ShieldCheck } from "lucide-react";
+import { Faq, RecruitmentNotice, CoreValue } from "@/types/recruit";
 import { formatDateTimeRange } from "@/utils/date";
+
+const ValueStyles: { [key: string]: { icon: React.ReactNode, gradient: string } } = {
+    growth: {
+        icon: <TrendingUp size={40} className="text-[#8CE0F4]" />,
+        gradient: "from-blue-500/20 to-cyan-500/20",
+    },
+    solidarity: {
+        icon: <Users size={40} className="text-[#A1B3DD]" />,
+        gradient: "from-indigo-500/20 to-purple-500/20",
+    },
+    responsibility: {
+        icon: <ShieldCheck size={40} className="text-[#ADE6D2]" />,
+        gradient: "from-emerald-500/20 to-teal-500/20",
+    },
+};
 
 interface RecruitClientProps {
     initialFaqs: Faq[];
     activeRecruitment?: RecruitmentNotice | null;
+    initialCoreValues?: CoreValue[];
 }
 
-export default function RecruitClient({ initialFaqs, activeRecruitment }: RecruitClientProps) {
+export default function RecruitClient({ initialFaqs, activeRecruitment, initialCoreValues = [] }: RecruitClientProps) {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
 
     const toggleAccordion = (index: number) => {
@@ -46,27 +60,30 @@ export default function RecruitClient({ initialFaqs, activeRecruitment }: Recrui
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-36">
-                    {coreValues.map((value, idx) => (
-                        <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, y: 16 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.4, delay: idx * 0.08 }}
-                            className="relative p-8 rounded-3xl bg-gradient-to-b from-white/[0.04] to-white/[0.02] border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
-                            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/5 backdrop-blur-sm border border-white/10">
-                                {value.icon}
-                            </div>
+                    {initialCoreValues.map((value, idx) => {
+                        const style = ValueStyles[value.key] || ValueStyles.growth;
+                        return (
+                            <motion.div
+                                key={value.id}
+                                initial={{ opacity: 0, y: 16 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: idx * 0.08 }}
+                                className={`relative p-8 rounded-3xl bg-gradient-to-b ${style.gradient} border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_10px_40px_rgba(0,0,0,0.4)]`}>
+                                <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 bg-white/5 backdrop-blur-sm border border-white/10">
+                                    {style.icon}
+                                </div>
 
-                            <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">
-                                {value.title}
-                            </h3>
+                                <h3 className="text-xl font-semibold text-white mb-4 tracking-tight">
+                                    {value.title}
+                                </h3>
 
-                            <p className="text-white/50 leading-relaxed text-sm">
-                                {value.desc}
-                            </p>
-                        </motion.div>
-                    ))}
+                                <p className="text-white/50 leading-relaxed text-sm">
+                                    {value.description}
+                                </p>
+                            </motion.div>
+                        );
+                    })}
                 </div>
 
                 <div className="max-w-4xl mx-auto mb-32">
