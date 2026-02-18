@@ -14,7 +14,7 @@ export default function Review({ className, initialReviews = [] }: ReviewPagePro
     const duplicatedReviews = [...initialReviews, ...initialReviews, ...initialReviews, ...initialReviews];
 
     return (
-        <section className={`relative w-full min-h-screen py-24 bg-background overflow-hidden flex flex-col justify-center ${className}`}>
+        <section className={`relative w-full min-h-screen py-24 overflow-hidden flex flex-col justify-center ${className}`}>
             <div className="container mx-auto max-w-7xl px-6 md:px-10 relative z-10 mb-12 flex-shrink-0">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

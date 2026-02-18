@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 export default function Hero({ className }: { className?: string }) {
     return (
-        <section className={`relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background ${className}`}>
+        <section className={`relative h-screen w-full flex flex-col items-center justify-center overflow-hidden ${className}`}>
             <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
                 <Canvas camera={{ position: [0, 0, 1] }} dpr={[1, 2]}>
                     <Suspense fallback={null}>

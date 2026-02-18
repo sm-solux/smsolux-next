@@ -61,7 +61,7 @@ export default function Introduce({
     });
 
     return (
-        <section className={`relative w-full bg-background overflow-hidden flex flex-col justify-center ${isSummary ? "py-20" : "py-24"} ${className}`}>
+        <section className={`relative w-full overflow-hidden flex flex-col justify-center ${isSummary ? "py-20" : "py-24"} ${className}`}>
             <div className="container mx-auto max-w-7xl px-6 md:px-10 relative z-10">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-start lg:items-center justify-between">
                     <motion.div

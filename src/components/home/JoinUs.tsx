@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function JoinUs({ className }: { className?: string }) {
     return (
-        <section className={`relative w-full py-20 bg-background overflow-hidden flex items-center justify-center ${className}`}>
+        <section className={`relative w-full py-20 overflow-hidden flex items-center justify-center ${className}`}>
             <div className="container mx-auto max-w-7xl px-6 md:px-10 relative z-10 text-center">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
