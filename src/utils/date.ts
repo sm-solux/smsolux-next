@@ -25,7 +25,3 @@ export const formatDateTime = (date: Date | string | number) => {
 
     return `${year}.${month}.${day} ${hours}:${minutes}`;
 };
-
-export const formatDateTimeRange = (startDate: Date | string | number, endDate: Date | string | number) => {
-    return `${formatDateTime(startDate)} ~ ${formatDateTime(endDate)}`;
-};

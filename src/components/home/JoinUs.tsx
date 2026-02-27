@@ -31,7 +31,7 @@ export default function JoinUs({ className }: { className?: string }) {
                     상상을 현실로 —<br />
                     아이디어가 <strong className="text-white">기획</strong>을 만나<br />
                     <strong className="text-white">디자인</strong>과 <strong className="text-white">코드</strong>로 완성되는 곳.<br /><br />
-                    <span className="font-medium">더 큰 가능성을 연결하는 솔룩스에서, 최고의 팀을 만나보세요.</span>
+                    <span className="font-medium">더 큰 가능성을 연결하는 솔룩스에서, <br className="sm:hidden" />최고의 팀을 만나보세요.</span>
                 </motion.p>
 
                 <div className="flex flex-col md:flex-row items-center justify-center gap-6">

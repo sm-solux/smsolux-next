@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp, TrendingUp, Users, ShieldCheck } from "lucide-react";
 import { Faq, RecruitmentNotice, CoreValue } from "@/types/recruit";
-import { formatDateTimeRange } from "@/utils/date";
+import { formatDateTime } from "@/utils/date";
 
 const ValueStyles: { [key: string]: { icon: React.ReactNode, gradient: string } } = {
     growth: {
@@ -164,7 +164,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment, initialC
 
                             <div className="mb-12">
                                 <p className="text-lg md:text-xl text-white/80 font-medium tracking-tight mb-4">
-                                    {formatDateTimeRange(activeRecruitment.start_date, activeRecruitment.end_date)}
+                                    {formatDateTime(activeRecruitment.start_date)}<br className="sm:hidden" /> ~ {formatDateTime(activeRecruitment.end_date)}
                                 </p>
                                 <p className="text-sm text-white/40 break-keep">
                                     숙명여자대학교 계정으로만 지원이 가능합니다.
@@ -196,7 +196,7 @@ export default function RecruitClient({ initialFaqs, activeRecruitment, initialC
 
                             <p className="text-sm text-white/40 break-keep mb-12">
                                 다음 모집 소식을 기다려주세요.<br />
-                                인스타그램을 팔로우하시면 가장 빠르게 소식을 받아보실 수 있습니다.
+                                인스타그램을 팔로우하시면 빠르게 소식을 받아보실 수 있습니다.
                             </p>
 
                             <button
