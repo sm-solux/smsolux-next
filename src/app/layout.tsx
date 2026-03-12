@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 import { Montserrat, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -56,6 +59,8 @@ export default async function RootLayout({
   return (
     <html lang="ko">
       <body className={`${montserrat.variable} ${notoSansKr.variable} bg-background text-white antialiased`}>
+        <Analytics />
+        <SpeedInsights />
         <Header />
         {children}
         <Footer initialLinks={footerLinks || []} />
