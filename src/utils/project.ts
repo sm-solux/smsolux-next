@@ -1,4 +1,5 @@
 import { Project } from "@/types/project";
+import { resolveSupabaseImageUrl } from "@/lib/storage";
 
 const AWARD_ORDER: Record<string, number> = {
     "대상": 0,
@@ -47,7 +48,9 @@ export const transformData = (flatData: any[]) => {
                             award: p.award || "",
                             category: p.category,
                             stacks: p.stacks || [],
-                            image: p.image || "",
+                            image: resolveSupabaseImageUrl(p.image, {
+                                bucket: "project-thumbnail",
+                            }),
                             link: p.link || "",
                         }))
                         .sort((a: Project, b: Project) =>

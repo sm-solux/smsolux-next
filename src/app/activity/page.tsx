@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import ActivitiesClient from './ActivitiesClient';
 import { supabase } from '@/lib/supabase';
+import { resolveSupabaseImageUrl } from '@/lib/storage';
 
 export const metadata: Metadata = {
     title: 'Activities - Solux',
@@ -23,6 +24,7 @@ export default async function ActivityPage() {
     // Since Supabase might return null for JSON/details if column doesn't match structure, handle safely
     const formattedActivities = activities?.map((activity: any) => ({
         ...activity,
+        image: resolveSupabaseImageUrl(activity.image),
         details: typeof activity.details === 'string'
             ? JSON.parse(activity.details)
             : activity.details // Handle potential stringified JSON
