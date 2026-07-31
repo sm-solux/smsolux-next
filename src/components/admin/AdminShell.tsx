@@ -14,6 +14,8 @@ import {
   Link2,
 } from "lucide-react";
 import { ADMIN_NAV_ITEMS } from "@/lib/admin-config";
+import { signOutAdmin } from "@/app/admin/auth-actions";
+import AdminLogoutButton from "@/components/admin/AdminLogoutButton";
 
 interface AdminShellProps {
   children: React.ReactNode;
@@ -115,7 +117,7 @@ export default function AdminShell({
               </nav>
             </div>
 
-            <div className="border-t border-stone-200 p-4">
+            <div className="space-y-2 border-t border-stone-200 p-4">
               <Link
                 href="/"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-stone-200 bg-white px-4 py-3 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:text-slate-950"
@@ -123,6 +125,11 @@ export default function AdminShell({
                 <ExternalLink className="h-4 w-4" />
                 사이트 보기
               </Link>
+              {!isBypassed && (
+                <form action={signOutAdmin}>
+                  <AdminLogoutButton />
+                </form>
+              )}
             </div>
           </aside>
 
@@ -131,16 +138,23 @@ export default function AdminShell({
               <section className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm md:p-8">
                 <div className="mb-8 border-b border-stone-200 pb-6">
                   <div className="md:hidden">
-                    <Link href="/admin/home" className="mb-5 inline-flex items-center">
-                      <Image
-                        src="/logo.png"
-                        alt="SOLUX"
-                        width={120}
-                        height={32}
-                        className="h-8 w-auto object-contain"
-                        priority
-                      />
-                    </Link>
+                    <div className="mb-5 flex items-center justify-between gap-4">
+                      <Link href="/admin/home" className="inline-flex items-center">
+                        <Image
+                          src="/logo.png"
+                          alt="SOLUX"
+                          width={120}
+                          height={32}
+                          className="h-8 w-auto object-contain"
+                          priority
+                        />
+                      </Link>
+                      {!isBypassed && (
+                        <form action={signOutAdmin}>
+                          <AdminLogoutButton compact />
+                        </form>
+                      )}
+                    </div>
                     <div className="mb-6 flex gap-2 overflow-x-auto pb-1">
                       {ADMIN_NAV_ITEMS.map((item) => {
                         const isActive =
