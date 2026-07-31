@@ -1,5 +1,3 @@
-import { Trophy } from "lucide-react";
-
 export const TechBadge = ({ stack }: { stack: string }) => (
     <span className="text-[11px] font-medium text-white/50">
         {stack}

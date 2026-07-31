@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase';
 import ProjectsClient from './ProjectsClient';
-import { Project } from '@/types/project';
 
 import { transformData } from '@/utils/project';
 

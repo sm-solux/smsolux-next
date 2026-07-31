@@ -1,6 +1,27 @@
 import { Project } from "@/types/project";
 import { resolveSupabaseImageUrl } from "@/lib/storage";
 
+type RawProject = {
+    id?: number;
+    generation: number;
+    year: number;
+    term: string;
+    title: string;
+    team_name: string;
+    desc: string;
+    award?: string | null;
+    category: Project["category"];
+    stacks?: string[] | null;
+    image?: string | null;
+    link?: string | null;
+};
+
+type GroupedArchive = {
+    gen: number;
+    year: number;
+    semesters: Record<string, RawProject[]>;
+};
+
 const AWARD_ORDER: Record<string, number> = {
     "대상": 0,
     "최우수상": 1,
@@ -15,8 +36,8 @@ const getAwardRank = (award: string): number => {
     return 99;
 };
 
-export const transformData = (flatData: any[]) => {
-    const groupedByGen = flatData.reduce((acc, project) => {
+export const transformData = (flatData: RawProject[]) => {
+    const groupedByGen = flatData.reduce<Record<number, GroupedArchive>>((acc, project) => {
         const { generation, year, term } = project;
         if (!acc[generation]) {
             acc[generation] = { gen: generation, year, semesters: {} };
@@ -31,8 +52,8 @@ export const transformData = (flatData: any[]) => {
     }, {});
 
     return Object.values(groupedByGen)
-        .sort((a: any, b: any) => b.gen - a.gen)
-        .map((group: any) => ({
+        .sort((a, b) => b.gen - a.gen)
+        .map((group) => ({
             gen: group.gen,
             year: group.year,
             semesters: Object.keys(group.semesters)
@@ -41,7 +62,7 @@ export const transformData = (flatData: any[]) => {
                 .map((term) => ({
                     term,
                     projects: group.semesters[term]
-                        .map((p: any): Project => ({
+                        .map((p): Project => ({
                             title: p.title,
                             teamName: p.team_name,
                             desc: p.desc,
