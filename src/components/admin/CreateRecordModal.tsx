@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { PencilLine, Plus, X } from "lucide-react";
+import { LoaderCircle, PencilLine, Plus, X } from "lucide-react";
 
 export default function CreateRecordModal({
   sectionId,
@@ -16,6 +16,35 @@ export default function CreateRecordModal({
   mode?: "create" | "edit";
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [pendingLabel, setPendingLabel] = useState<string | null>(null);
+  const actionStartedRef = useRef(false);
+
+  const startAction = useCallback((label: string) => {
+    if (actionStartedRef.current) {
+      return false;
+    }
+
+    actionStartedRef.current = true;
+    setPendingLabel(label);
+
+    // Let the browser dispatch the submit event before removing the modal form.
+    window.setTimeout(() => setIsOpen(false), 0);
+    return true;
+  }, []);
+
+  const handleSubmitCapture = (event: React.FormEvent<HTMLDivElement>) => {
+    const form = event.target;
+
+    if (!(form instanceof HTMLFormElement)) {
+      return;
+    }
+
+    const label = form.dataset.pendingLabel ?? "처리";
+
+    if (!startAction(label)) {
+      event.preventDefault();
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) {
@@ -38,10 +67,24 @@ export default function CreateRecordModal({
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!pendingLabel) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      actionStartedRef.current = false;
+      setPendingLabel(null);
+    }, 20_000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [pendingLabel]);
+
   return (
     <>
       <button
         type="button"
+        disabled={Boolean(pendingLabel)}
         onClick={() => setIsOpen(true)}
         className={
           mode === "create"
@@ -78,7 +121,10 @@ export default function CreateRecordModal({
             onClick={() => setIsOpen(false)}
           />
           <div className="relative flex min-h-full items-center justify-center">
-            <div className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-[#131519] p-5 text-white shadow-[0_32px_100px_rgba(0,0,0,0.55)] md:p-6">
+            <div
+              className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-[#131519] p-5 text-white shadow-[0_32px_100px_rgba(0,0,0,0.55)] md:p-6"
+              onSubmitCapture={handleSubmitCapture}
+            >
               <div className="mb-6 flex items-start justify-between gap-4 border-b border-white/10 pb-5">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8CE0F4]/60">
@@ -106,6 +152,27 @@ export default function CreateRecordModal({
         </div>,
         document.body
       )}
+
+      {pendingLabel &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[130] flex items-center justify-center bg-[#0F1012]/80 px-6 backdrop-blur-md"
+            role="status"
+            aria-live="assertive"
+          >
+            <div className="flex min-w-52 flex-col items-center rounded-2xl border border-white/10 bg-[#15171B] px-8 py-7 text-center shadow-[0_28px_90px_rgba(0,0,0,0.5)]">
+              <LoaderCircle className="h-7 w-7 animate-spin text-[#8CE0F4]" />
+              <p className="mt-4 text-sm font-semibold text-white">
+                {pendingLabel} 중입니다
+              </p>
+              <p className="mt-1 text-xs text-white/35">
+                잠시만 기다려주세요.
+              </p>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }

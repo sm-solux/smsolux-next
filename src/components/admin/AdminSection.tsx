@@ -281,7 +281,12 @@ export function RecordForm({
       )}
 
       <div>
-        <form id={formId} action={saveAdminRecord} className="space-y-5">
+        <form
+          id={formId}
+          action={saveAdminRecord}
+          data-pending-label={isCreateForm ? "추가" : "저장"}
+          className="space-y-5"
+        >
           <input type="hidden" name="sectionId" value={section.id} />
           {!isCreateForm && recordId !== undefined && recordId !== null && (
             <input type="hidden" name={primaryKey} value={String(recordId)} />
@@ -322,7 +327,7 @@ export function RecordForm({
 
         <div className="mt-5 flex justify-end gap-2">
           {!isCreateForm && recordId !== undefined && recordId !== null && (
-            <form action={deleteAdminRecord}>
+            <form action={deleteAdminRecord} data-pending-label="삭제">
               <input type="hidden" name="sectionId" value={section.id} />
               <input type="hidden" name={primaryKey} value={String(recordId)} />
               <AdminDeleteButton />
