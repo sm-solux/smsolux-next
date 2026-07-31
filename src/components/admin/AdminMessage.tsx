@@ -15,8 +15,8 @@ export default function AdminMessage({
     <div
       className={`rounded-lg border px-4 py-3 text-sm ${
         isError
-          ? "border-red-200 bg-red-50 text-red-700"
-          : "border-emerald-200 bg-emerald-50 text-emerald-800"
+          ? "border-red-400/20 bg-red-400/10 text-red-200"
+          : "border-[#8CE0F4]/20 bg-[#8CE0F4]/10 text-[#b9effb]"
       }`}
       role={isError ? "alert" : "status"}
     >

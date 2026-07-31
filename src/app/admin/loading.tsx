@@ -1,14 +1,14 @@
 function SkeletonBlock({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`animate-pulse rounded-lg bg-stone-100 shadow-[inset_0_0_0_1px_rgba(214,211,209,0.7)] ${className}`}
+      className={`animate-pulse rounded-lg bg-white/[0.06] ${className}`}
     />
   );
 }
 
 function SkeletonSection() {
   return (
-    <section className="rounded-xl border border-stone-200 bg-white p-5">
+    <section className="border-b border-white/10 pb-10">
       <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="w-full max-w-2xl">
           <SkeletonBlock className="h-5 w-44" />
@@ -17,7 +17,7 @@ function SkeletonSection() {
         <SkeletonBlock className="h-9 w-24" />
       </div>
 
-      <div className="rounded-xl border border-stone-200 bg-white p-5">
+      <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
         <div className="mb-4 flex items-center gap-2">
           <SkeletonBlock className="h-4 w-4" />
           <SkeletonBlock className="h-4 w-20" />

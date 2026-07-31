@@ -18,8 +18,8 @@ function formatDateTimeLocal(value: unknown) {
     return value.slice(0, 16);
   }
 
-  const localTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-  return localTime.toISOString().slice(0, 16);
+  const koreaTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  return koreaTime.toISOString().slice(0, 16);
 }
 
 function formatFieldValue(field: AdminFieldConfig, value: unknown) {
@@ -69,7 +69,7 @@ function FieldInput({
   value: unknown;
 }) {
   const baseClassName =
-    "mt-2 w-full rounded-lg border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-slate-900 outline-none transition-colors placeholder:text-slate-400 focus:border-slate-400 focus:bg-white";
+    "mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/20 focus:border-[#8CE0F4]/60 focus:bg-black/30";
 
   if (field.type === "textarea" || field.type === "detail-list") {
     return (
@@ -86,16 +86,16 @@ function FieldInput({
 
   if (field.type === "checkbox") {
     return (
-      <label className="mt-2 flex items-center justify-between rounded-lg border border-stone-200 bg-stone-50 px-4 py-3">
+      <label className="mt-2 flex items-center justify-between rounded-xl border border-white/10 bg-black/20 px-4 py-3">
         <div>
-          <p className="text-sm font-medium text-slate-900">{field.label}</p>
-          <p className="text-xs text-slate-500">체크 시 현재 공개 상태로 표시됩니다.</p>
+          <p className="text-sm font-medium text-white">{field.label}</p>
+          <p className="text-xs text-white/35">체크한 항목만 공개 대상으로 사용합니다.</p>
         </div>
         <input
           type="checkbox"
           name={field.name}
           defaultChecked={Boolean(value)}
-          className="h-5 w-5 rounded border-slate-300 text-slate-900"
+          className="h-5 w-5 rounded border-white/20 bg-black/30 accent-[#8CE0F4]"
         />
       </label>
     );
@@ -133,65 +133,99 @@ function getRecordHeadline(record: Record<string, unknown>) {
   return "이름 없는 항목";
 }
 
-function getRecordMeta(section: AdminSectionConfig, record: Record<string, unknown>) {
-  const metaCandidates = section.fields
-    .filter((field) => !["title", "name", "question"].includes(field.name))
-    .map((field) => {
-      const value = record[field.name];
-
-      if (typeof value === "string" && value.trim()) {
-        return `${field.label}: ${value}`;
-      }
-
-      if (typeof value === "number") {
-        return `${field.label}: ${value}`;
-      }
-
-      if (typeof value === "boolean") {
-        return `${field.label}: ${value ? "활성" : "비활성"}`;
-      }
-
-      if (Array.isArray(value) && value.length > 0) {
-        return `${field.label}: ${value.length}개`;
-      }
-
-      return null;
-    })
-    .filter(Boolean)
-    .slice(0, 2);
-
-  if (metaCandidates.length > 0) {
-    return metaCandidates.join(" · ");
-  }
-
-  const primaryKey = section.primaryKey ?? "id";
-  return `${primaryKey}: ${String(record[primaryKey] ?? "-")}`;
+function joinRecordValues(
+  record: Record<string, unknown>,
+  fields: string[]
+) {
+  return fields
+    .map((field) => record[field])
+    .filter((value) =>
+      typeof value === "string"
+        ? Boolean(value.trim())
+        : typeof value === "number"
+    )
+    .map(String)
+    .join(" · ");
 }
 
-function getDashMeta(section: AdminSectionConfig, record: Record<string, unknown>) {
-  const excludedFields =
-    section.id === "reviews"
-      ? ["name", "description", "content", "desc", "answer", "details"]
-      : ["description", "content", "desc", "answer", "details"];
-  const values = section.fields
-    .filter((field) => !excludedFields.includes(field.name))
-    .map((field) => {
-      const value = record[field.name];
+function getSummaryMeta(sectionId: string, record: Record<string, unknown>) {
+  switch (sectionId) {
+    case "homeActivities":
+      return joinRecordValues(record, ["key"]);
+    case "reviews":
+      return joinRecordValues(record, ["gen", "part"]);
+    case "activities":
+      return record.order === undefined ? "" : `노출 순서 ${record.order}`;
+    case "projects":
+      return joinRecordValues(record, ["generation", "term", "team_name"]);
+    case "recruitCoreValues":
+    case "footerLinks":
+      return record.order_index === undefined
+        ? joinRecordValues(record, ["key"])
+        : `노출 순서 ${record.order_index}`;
+    default:
+      return "";
+  }
+}
 
-      if (typeof value === "string" && value.trim()) {
-        return value;
-      }
+function formatAdminDate(value: unknown) {
+  if (typeof value !== "string") {
+    return "날짜 미설정";
+  }
 
-      if (typeof value === "number") {
-        return String(value);
-      }
+  const date = new Date(value);
 
-      return null;
-    })
-    .filter(Boolean)
-    .slice(0, 3);
+  if (Number.isNaN(date.getTime())) {
+    return "날짜 확인 필요";
+  }
 
-  return values.join(" - ");
+  return new Intl.DateTimeFormat("ko-KR", {
+    timeZone: "Asia/Seoul",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
+function getRecruitmentStatus(record: Record<string, unknown>) {
+  if (!record.is_active) {
+    return {
+      label: "비공개",
+      className: "border-white/10 bg-white/5 text-white/40",
+    };
+  }
+
+  const now = Date.now();
+  const start = new Date(String(record.start_date ?? "")).getTime();
+  const end = new Date(String(record.end_date ?? "")).getTime();
+
+  if (!Number.isFinite(start) || !Number.isFinite(end)) {
+    return {
+      label: "날짜 확인",
+      className: "border-amber-400/20 bg-amber-400/10 text-amber-200",
+    };
+  }
+
+  if (now < start) {
+    return {
+      label: "게시 예정",
+      className: "border-blue-400/20 bg-blue-400/10 text-blue-200",
+    };
+  }
+
+  if (now >= end) {
+    return {
+      label: "마감",
+      className: "border-white/10 bg-white/5 text-white/40",
+    };
+  }
+
+  return {
+    label: "모집 중",
+    className: "border-[#8CE0F4]/25 bg-[#8CE0F4]/10 text-[#8CE0F4]",
+  };
 }
 
 function getRecordBodyPreview(record: Record<string, unknown>) {
@@ -226,33 +260,20 @@ export function RecordForm({
 
   return (
     <article
-      className={
-        variant === "plain"
-          ? ""
-          : `rounded-xl border p-5 ${
-              isCreateForm
-                ? "border-stone-300 bg-stone-50"
-                : "border-stone-200 bg-white"
-            }`
-      }
+      className={variant === "plain" ? "" : "rounded-2xl border border-white/10 bg-white/[0.025] p-5"}
     >
       {!hideHeader && (
         <div className="mb-5 flex items-center justify-between gap-3">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-white/35">
               {isCreateForm ? "새 항목 추가" : "기존 항목 수정"}
             </p>
-            <h4 className="mt-1 text-lg font-semibold text-slate-950">
+            <h4 className="mt-1 text-lg font-semibold text-white">
               {isCreateForm ? `${section.title} 추가` : getRecordHeadline(record)}
             </h4>
-            {!isCreateForm && (
-              <p className="mt-1 text-sm text-slate-500">
-                {getRecordMeta(section, record)}
-              </p>
-            )}
           </div>
           {!isCreateForm && recordId !== undefined && recordId !== null && (
-            <span className="rounded-md border border-stone-200 bg-stone-50 px-3 py-1 text-[11px] text-slate-500">
+            <span className="rounded-md border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-white/35">
               {primaryKey}: {String(recordId)}
             </span>
           )}
@@ -278,7 +299,7 @@ export function RecordForm({
               >
                 {field.type !== "checkbox" && (
                   <div className="flex items-center gap-2">
-                    <label className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <label className="text-xs font-semibold uppercase tracking-[0.14em] text-white/40">
                       {field.label}
                       {field.required && (
                         <span className="ml-1 text-sm font-semibold text-red-500">
@@ -290,7 +311,7 @@ export function RecordForm({
                 )}
                 <FieldInput field={field} value={record[field.name]} />
                 {field.description && (
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
+                  <p className="mt-2 text-xs leading-5 text-white/35">
                     {field.description}
                   </p>
                 )}
@@ -310,7 +331,7 @@ export function RecordForm({
           <button
             type="submit"
             form={formId}
-            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#8CE0F4] px-4 py-2.5 text-sm font-bold text-[#071013] transition-colors hover:bg-[#9ae8f9]"
           >
             {isCreateForm ? <Plus className="h-4 w-4" /> : <PencilLine className="h-4 w-4" />}
             {isCreateForm ? "새 항목 저장" : "변경사항 저장"}
@@ -335,36 +356,37 @@ export default function AdminSection({
   editMode?: "inline" | "modal";
 }) {
   return (
-    <section className="space-y-5 rounded-xl border border-stone-200 bg-white p-5">
-      <div className="flex flex-col gap-1">
-        <div>
-          <h3 className="text-base font-semibold tracking-tight text-slate-950">
-            {section.title}
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-600">
+    <section className="space-y-5 border-b border-white/10 pb-10 last:border-b-0 last:pb-0">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-3">
+            <h3 className="text-lg font-semibold tracking-tight text-white">
+              {section.title}
+            </h3>
+            <span className="text-xs tabular-nums text-white/30">{records.length}</span>
+          </div>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-white/40">
             {section.description}
-            <span className="ml-2 text-xs text-slate-400">
-              총 {records.length}개 항목
-            </span>
           </p>
         </div>
+        {createMode === "modal" && (
+          <CreateRecordModal sectionId={section.id} title={section.title}>
+            <RecordForm
+              section={section}
+              record={{}}
+              isCreateForm
+              hideHeader
+              variant="plain"
+            />
+          </CreateRecordModal>
+        )}
       </div>
 
-      {createMode === "modal" ? (
-        <CreateRecordModal sectionId={section.id} title={section.title}>
-          <RecordForm
-            section={section}
-            record={{}}
-            isCreateForm
-            hideHeader
-            variant="plain"
-          />
-        </CreateRecordModal>
-      ) : (
-        <div className="rounded-xl border border-stone-200 bg-white p-5">
+      {createMode === "inline" && (
+        <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
           <div className="mb-4 flex items-center gap-2">
-            <Plus className="h-4 w-4 text-slate-500" />
-            <p className="text-sm font-semibold text-slate-900">새 항목</p>
+            <Plus className="h-4 w-4 text-[#8CE0F4]" />
+            <p className="text-sm font-semibold text-white">새 항목</p>
           </div>
           <RecordForm
             section={section}
@@ -375,7 +397,7 @@ export default function AdminSection({
       )}
 
       {records.length === 0 && (
-        <div className="rounded-lg border border-dashed border-stone-300 bg-stone-50 px-5 py-4 text-sm text-slate-500">
+        <div className="rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-5 py-8 text-center text-sm text-white/35">
           {section.emptyStateLabel} 위의 카드에서 첫 항목을 추가할 수 있습니다.
         </div>
       )}
@@ -391,35 +413,49 @@ export default function AdminSection({
           const recordKey = String(
             record[section.primaryKey ?? "id"] ?? `record-${index}`
           );
+          const summaryMeta = getSummaryMeta(section.id, record);
+          const recruitmentStatus =
+            section.id === "recruitments" ? getRecruitmentStatus(record) : null;
 
           const summaryContent = (
-            <>
-              <div className="min-w-0">
-                {getDashMeta(section, record) && (
-                  <p className="text-[11px] font-medium tracking-[0.08em] text-slate-400">
-                    {getDashMeta(section, record)}
-                  </p>
-                )}
-                <p className="mt-1 text-sm font-semibold text-slate-900">
+            <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  {recruitmentStatus && (
+                    <span className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold ${recruitmentStatus.className}`}>
+                      {recruitmentStatus.label}
+                    </span>
+                  )}
+                  {summaryMeta && (
+                    <p className="text-xs text-white/35">{summaryMeta}</p>
+                  )}
+                </div>
+                <p className={`${recruitmentStatus || summaryMeta ? "mt-3" : ""} text-base font-semibold text-white`}>
                   {getRecordHeadline(record)}
                 </p>
-                {getRecordBodyPreview(record) ? (
-                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
+                {section.id === "recruitments" ? (
+                  <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span className="text-xs font-medium text-white/35">마감</span>
+                    <span className="text-lg font-semibold tabular-nums text-white">
+                      {formatAdminDate(record.end_date)}
+                    </span>
+                    {recruitmentStatus?.label === "게시 예정" && (
+                      <span className="text-xs text-white/30">
+                        · 시작 {formatAdminDate(record.start_date)}
+                      </span>
+                    )}
+                  </div>
+                ) : getRecordBodyPreview(record) ? (
+                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/45">
                     {getRecordBodyPreview(record)}
                   </p>
-                ) : (
-                  <p className="mt-1 text-sm text-slate-500">
-                    {getRecordMeta(section, record)}
-                  </p>
-                )}
-              </div>
-            </>
+                ) : null}
+            </div>
           );
 
           return editMode === "modal" ? (
             <article
               key={recordKey}
-              className="flex min-h-28 items-start justify-between gap-4 rounded-xl border border-stone-200 bg-stone-50 px-5 py-4"
+              className="flex min-h-28 items-start justify-between gap-5 rounded-2xl border border-white/10 bg-white/[0.025] px-5 py-5 transition-colors hover:border-white/15 hover:bg-white/[0.04]"
             >
               {summaryContent}
               <div className="shrink-0">
@@ -440,16 +476,16 @@ export default function AdminSection({
           ) : (
             <details
               key={recordKey}
-              className="group overflow-hidden rounded-xl border border-stone-200 bg-white open:border-slate-300"
+              className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] open:border-white/20"
             >
-              <summary className="flex min-h-28 cursor-pointer list-none items-start justify-between gap-4 bg-stone-50 px-5 py-4 transition-colors hover:bg-stone-100">
+              <summary className="flex min-h-28 cursor-pointer list-none items-start justify-between gap-4 px-5 py-5 transition-colors hover:bg-white/[0.035]">
                 {summaryContent}
-                <div className="flex shrink-0 items-center gap-2 text-sm text-slate-500">
+                <div className="flex shrink-0 items-center gap-2 text-sm text-white/35">
                   편집하기
                   <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" />
                 </div>
               </summary>
-              <div className="border-t border-stone-200 bg-white px-5 py-5">
+              <div className="border-t border-white/10 bg-black/10 px-5 py-5">
                 <RecordForm
                   section={section}
                   record={record}

@@ -15,7 +15,7 @@ export default function AdminDeleteButton() {
           event.preventDefault();
         }
       }}
-      className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+      className="inline-flex items-center gap-2 rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-2.5 text-sm font-semibold text-red-300 transition-colors hover:bg-red-400/10 disabled:cursor-not-allowed disabled:opacity-60"
     >
       <Trash2 className="h-4 w-4" />
       {pending ? "삭제 중..." : "삭제"}
