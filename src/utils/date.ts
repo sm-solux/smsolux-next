@@ -1,3 +1,13 @@
+const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
+// Existing recruitment rows store the intended Korean wall-clock value in a
+// UTC-shaped timestamp. Shift the current instant to the same comparison scale.
+export const getKstWallClockISOString = (date = new Date()) =>
+    new Date(date.getTime() + KST_OFFSET_MS).toISOString();
+
+export const getKstWallClockTimestamp = (date = new Date()) =>
+    date.getTime() + KST_OFFSET_MS;
+
 export const formatDateTime = (date: Date | string | number) => {
     const d = new Date(date);
     if (isNaN(d.getTime())) return "";

@@ -6,6 +6,7 @@ import {
 import { ChevronDown, PencilLine, Plus } from "lucide-react";
 import CreateRecordModal from "@/components/admin/CreateRecordModal";
 import AdminDeleteButton from "@/components/admin/AdminDeleteButton";
+import { getKstWallClockTimestamp } from "@/utils/date";
 
 function formatDateTimeLocal(value: unknown) {
   if (typeof value !== "string" || !value) {
@@ -18,8 +19,7 @@ function formatDateTimeLocal(value: unknown) {
     return value.slice(0, 16);
   }
 
-  const koreaTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-  return koreaTime.toISOString().slice(0, 16);
+  return date.toISOString().slice(0, 16);
 }
 
 function formatFieldValue(field: AdminFieldConfig, value: unknown) {
@@ -180,7 +180,7 @@ function formatAdminDate(value: unknown) {
   }
 
   return new Intl.DateTimeFormat("ko-KR", {
-    timeZone: "Asia/Seoul",
+    timeZone: "UTC",
     month: "long",
     day: "numeric",
     hour: "2-digit",
@@ -197,7 +197,7 @@ function getRecruitmentStatus(record: Record<string, unknown>) {
     };
   }
 
-  const now = Date.now();
+  const now = getKstWallClockTimestamp();
   const start = new Date(String(record.start_date ?? "")).getTime();
   const end = new Date(String(record.end_date ?? "")).getTime();
 

@@ -16,7 +16,7 @@ export default async function AdminRecruitPage({
   const { message, status } = await searchParams;
   const [recruitments, coreValues, faqs] = await Promise.all([
     fetchTableRecords("recruitments", {
-      orderBy: "start_date",
+      orderBy: "end_date",
       ascending: false,
     }),
     fetchTableRecords("recruit_core_values", {

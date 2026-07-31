@@ -60,7 +60,8 @@ function parseFieldValue(field: AdminFieldConfig, formData: FormData) {
     case "detail-list":
       return parseDetailList(raw);
     case "datetime-local": {
-      const date = new Date(raw);
+      const wallClockUtc = `${raw}${raw.length === 16 ? ":00" : ""}Z`;
+      const date = new Date(wallClockUtc);
 
       if (Number.isNaN(date.getTime())) {
         throw new AdminValidationError(`${field.label} 날짜가 올바르지 않습니다.`);
