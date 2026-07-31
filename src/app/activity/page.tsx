@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import ActivitiesClient from './ActivitiesClient';
 import { supabase } from '@/lib/supabase';
-import { resolveSupabaseImageUrl } from '@/lib/storage';
+import { normalizeActivityRecord } from '@/lib/activity';
+import { createClient } from '@/lib/supabase-server';
+import { isAdminBypassEnabled, isAdminEmailAllowed } from '@/lib/admin-access';
 
 export const metadata: Metadata = {
     title: 'Activities - Solux',
@@ -16,19 +18,19 @@ export default async function ActivityPage() {
         .select('*')
         .order('order', { ascending: true }); // Ensure 'order' column exists or use created_at
 
+    const supabaseServer = await createClient();
+    const {
+        data: { user },
+    } = await supabaseServer.auth.getUser();
+
+    const canEdit = isAdminBypassEnabled() || isAdminEmailAllowed(user?.email);
+
     if (error) {
         console.error("DB Error:", error);
         // Optional: Render error state
     }
 
-    // Since Supabase might return null for JSON/details if column doesn't match structure, handle safely
-    const formattedActivities = activities?.map((activity: any) => ({
-        ...activity,
-        image: resolveSupabaseImageUrl(activity.image),
-        details: typeof activity.details === 'string'
-            ? JSON.parse(activity.details)
-            : activity.details // Handle potential stringified JSON
-    })) || [];
+    const formattedActivities = (activities ?? []).map(normalizeActivityRecord);
 
-    return <ActivitiesClient initialActivities={formattedActivities} />;
+    return <ActivitiesClient initialActivities={formattedActivities} canEdit={canEdit} />;
 }

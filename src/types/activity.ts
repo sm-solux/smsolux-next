@@ -8,6 +8,5 @@ export type Activity = {
     title: string;
     description: string;
     details?: ActivityContent[];
-    image?: string;
     order: number;
 };
