@@ -62,10 +62,12 @@ npm install
 
 프로젝트 루트에 `.env.local` 파일을 생성하고 Supabase 관련 키를 입력해야 합니다.
 
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
+
+`SUPABASE_SERVICE_ROLE_KEY`는 `/admin`의 서버 액션에서만 사용되며 브라우저에
+노출하면 안 됩니다. 개발 환경은 기본적으로 관리자 로그인을 우회하지만, 이 상태에서
+DB 저장·삭제를 사용하려면 서비스 역할 키가 필요합니다. 실제 로그인 흐름을 테스트하려면
+`ADMIN_BYPASS_AUTH=false`를 추가하세요. 서비스 역할 키가 없을 때는 허용된 계정의
+Supabase 세션과 해당 테이블의 RLS 쓰기 정책을 사용합니다.
 
 ### 3. 개발 서버 실행
 

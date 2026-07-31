@@ -3,6 +3,7 @@
 import React from "react";
 import { FooterLink } from "@/types/layout";
 import { LucideIcon, Mail, Instagram, Github, Linkedin, MessageCircle, Link as LinkIcon } from "lucide-react";
+import Link from "next/link";
 
 const FooterStyles: { [key: string]: { icon: LucideIcon, hover: string } } = {
     email: { icon: Mail, hover: "hover:text-white" },
@@ -25,8 +26,15 @@ export default function Footer({ initialLinks = [] }: FooterProps) {
                         &copy; 2026 SOLUX. All rights reserved.
                     </p>
                     <p className="text-gray-600 text-xs">
-                        Sookmyung Women's University Programming Club
+                        Sookmyung Women&apos;s University Programming Club
                     </p>
+                    <Link
+                        href="/admin/home"
+                        className="text-[11px] text-gray-600 hover:text-gray-400 transition-colors w-fit"
+                        aria-label="Admin"
+                    >
+                        Admin
+                    </Link>
                 </div>
 
                 <div className="flex items-center gap-6">

@@ -4,8 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { Montserrat, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import AppFrame from "@/components/layout/AppFrame";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -22,10 +21,13 @@ const notoSansKr = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://sm-solux.dev"
+  ),
   title: "SOLUX - 숙명여자대학교 개발 동아리",
   description: "숙명여자대학교 유일 프로그래밍 중앙 동아리 SOLUX입니다.",
   icons: {
-    icon: "/logo.png",
+    icon: "/favicon.ico",
   },
   openGraph: {
     title: "SOLUX - 숙명여자대학교 개발 동아리",
@@ -61,9 +63,7 @@ export default async function RootLayout({
       <body className={`${montserrat.variable} ${notoSansKr.variable} bg-background text-white antialiased`}>
         <Analytics />
         <SpeedInsights />
-        <Header />
-        {children}
-        <Footer initialLinks={footerLinks || []} />
+        <AppFrame footerLinks={footerLinks || []}>{children}</AppFrame>
       </body>
     </html>
   );
