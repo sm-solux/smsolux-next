@@ -6,9 +6,10 @@ import { usePathname } from "next/navigation";
 
 interface AppFrameProps {
   children: React.ReactNode;
+  settings?: Record<string, string>;
 }
 
-export default function AppFrame({ children }: AppFrameProps) {
+export default function AppFrame({ children, settings }: AppFrameProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname.startsWith("/admin");
 
@@ -20,7 +21,7 @@ export default function AppFrame({ children }: AppFrameProps) {
     <>
       <Header />
       {children}
-      <Footer />
+      <Footer settings={settings} />
     </>
   );
 }

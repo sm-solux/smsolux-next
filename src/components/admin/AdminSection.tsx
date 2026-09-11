@@ -184,6 +184,8 @@ function joinRecordValues(
 
 function getSummaryMeta(sectionId: string, record: Record<string, unknown>) {
   switch (sectionId) {
+    case "siteSettings":
+      return joinRecordValues(record, ["key"]);
     case "reviews":
       return joinRecordValues(record, ["gen", "part"]);
     case "activities":
@@ -355,7 +357,7 @@ export function RecordForm({
         </form>
 
         <div className="mt-5 flex justify-end gap-2">
-          {!isCreateForm && recordId !== undefined && recordId !== null && (
+          {!section.fixedRows && !isCreateForm && recordId !== undefined && recordId !== null && (
             <form action={deleteAdminRecord} data-pending-label="삭제">
               <input type="hidden" name="sectionId" value={section.id} />
               <input type="hidden" name={primaryKey} value={String(recordId)} />
@@ -403,7 +405,7 @@ export default function AdminSection({
             {section.description}
           </p>
         </div>
-        {createMode === "modal" && (
+        {createMode === "modal" && !section.fixedRows && (
           <CreateRecordModal sectionId={section.id} title={section.title}>
             <RecordForm
               section={section}
@@ -416,7 +418,7 @@ export default function AdminSection({
         )}
       </div>
 
-      {createMode === "inline" && (
+      {createMode === "inline" && !section.fixedRows && (
         <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5">
           <div className="mb-4 flex items-center gap-2">
             <Plus className="h-4 w-4 text-[#8CE0F4]" />

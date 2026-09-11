@@ -31,10 +31,33 @@ export interface AdminSectionConfig {
   adminPath: string;
   revalidatePaths: string[];
   emptyStateLabel: string;
+  /** 행 목록이 고정된 섹션. 값만 고칠 수 있고 추가·삭제는 막는다. */
+  fixedRows?: boolean;
   fields: AdminFieldConfig[];
 }
 
 export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
+  siteSettings: {
+    id: "siteSettings",
+    table: "site_settings",
+    title: "사이트 설정",
+    description:
+      "기수마다 바뀌는 값을 관리합니다. 나머지 푸터 링크는 코드에 고정되어 있습니다.",
+    primaryKey: "key",
+    publicPath: "/",
+    adminPath: "/admin/settings",
+    revalidatePaths: ["/", "/admin", "/admin/settings"],
+    emptyStateLabel: "설정 항목이 없습니다.",
+    fixedRows: true,
+    fields: [
+      {
+        name: "value",
+        label: "값",
+        placeholder: "https://open.kakao.com/o/...",
+        required: true,
+      },
+    ],
+  },
   reviews: {
     id: "reviews",
     table: "reviews",
@@ -305,5 +328,11 @@ export const ADMIN_NAV_ITEMS = [
     label: "Recruit",
     eyebrow: "/recruit",
     description: "모집 공고와 FAQ",
+  },
+  {
+    href: "/admin/settings",
+    label: "Settings",
+    eyebrow: "사이트",
+    description: "기수마다 바뀌는 값",
   },
 ];

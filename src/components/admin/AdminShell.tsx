@@ -10,6 +10,7 @@ import {
   GalleryVerticalEnd,
   FolderKanban,
   Megaphone,
+  Settings,
 } from "lucide-react";
 import { ADMIN_NAV_ITEMS } from "@/lib/admin-config";
 import { signOutAdmin } from "@/app/admin/auth-actions";
@@ -32,6 +33,7 @@ export default function AdminShell({
     "/admin/activity": GalleryVerticalEnd,
     "/admin/projects": FolderKanban,
     "/admin/recruit": Megaphone,
+    "/admin/settings": Settings,
   } as const;
 
   const currentItem =

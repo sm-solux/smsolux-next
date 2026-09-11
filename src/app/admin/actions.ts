@@ -1,7 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   ADMIN_SECTIONS,
@@ -10,6 +10,7 @@ import {
 } from "@/lib/admin-config";
 import { requireAdminDatabase } from "@/lib/admin-db";
 import { getSupabaseStorageObjectPath } from "@/lib/storage";
+import { SITE_SETTINGS_CACHE_TAG } from "@/lib/site-settings";
 
 class AdminValidationError extends Error {}
 
@@ -166,6 +167,11 @@ function getErrorMessage(error: unknown) {
 
 function revalidateSection(section: AdminSectionConfig) {
   section.revalidatePaths.forEach((path) => revalidatePath(path));
+
+  // 사이트 설정은 푸터가 캐시해 두고 쓰므로 태그로 따로 무효화한다.
+  if (section.table === "site_settings") {
+    updateTag(SITE_SETTINGS_CACHE_TAG);
+  }
 }
 
 export async function saveAdminRecord(formData: FormData) {

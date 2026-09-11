@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Montserrat, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import AppFrame from "@/components/layout/AppFrame";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -46,17 +47,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="ko">
       <body className={`${montserrat.variable} ${notoSansKr.variable} bg-background text-white antialiased`}>
         <Analytics />
         <SpeedInsights />
-        <AppFrame>{children}</AppFrame>
+        <AppFrame settings={settings}>{children}</AppFrame>
       </body>
     </html>
   );

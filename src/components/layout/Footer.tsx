@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FOOTER_LINKS } from "@/lib/site-content";
+import { SITE_SETTING_KEYS } from "@/lib/site-settings";
 import { LucideIcon, Mail, Instagram, Github, Linkedin, MessageCircle, Link as LinkIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -13,7 +14,19 @@ const FooterStyles: { [key: string]: { icon: LucideIcon, hover: string } } = {
     linkedin: { icon: Linkedin, hover: "hover:text-blue-500" }
 };
 
-export default function Footer() {
+interface FooterProps {
+    /** 기수마다 바뀌는 값만 설정 테이블에서 내려온다. 나머지는 상수 그대로. */
+    settings?: Record<string, string>;
+}
+
+export default function Footer({ settings }: FooterProps) {
+    const kakaoUrl = settings?.[SITE_SETTING_KEYS.kakaoOpenChatUrl];
+    const links = kakaoUrl
+        ? FOOTER_LINKS.map((link) =>
+            link.key === "kakao" ? { ...link, url: kakaoUrl } : link
+        )
+        : FOOTER_LINKS;
+
     return (
         <footer className="bg-[#0F1012] w-full border-t border-white/5 py-8">
             <div className="container mx-auto px-6 md:px-10 max-w-7xl flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
@@ -34,7 +47,7 @@ export default function Footer() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    {FOOTER_LINKS.map((link) => {
+                    {links.map((link) => {
                         const style = FooterStyles[link.key] || { icon: LinkIcon, hover: "hover:text-primary" };
                         const Icon = style.icon;
 
