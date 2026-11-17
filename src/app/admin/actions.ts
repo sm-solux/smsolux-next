@@ -11,6 +11,7 @@ import {
 import { requireAdminDatabase } from "@/lib/admin-db";
 import { getSupabaseStorageObjectPath } from "@/lib/storage";
 import { SITE_SETTINGS_CACHE_TAG } from "@/lib/site-settings";
+import { createTimer } from "@/lib/timing";
 
 class AdminValidationError extends Error {}
 
@@ -199,9 +200,11 @@ export async function saveAdminRecord(formData: FormData) {
   const imageFields = section.fields.filter((field) => field.type === "image");
   const uploadedFiles: StoredFile[] = [];
   let recordSaved = false;
+  const timer = createTimer(`save ${section.id}${recordId ? ` #${recordId}` : " (new)"}`);
 
   try {
     const database = await requireAdminDatabase();
+    timer.step("auth");
     let existingRecord: Record<string, unknown> | null = null;
 
     if (recordId && imageFields.length) {
@@ -220,6 +223,7 @@ export async function saveAdminRecord(formData: FormData) {
       }
 
       existingRecord = data as unknown as Record<string, unknown>;
+      timer.step("readExisting");
     }
 
     for (const field of imageFields) {
@@ -254,6 +258,7 @@ export async function saveAdminRecord(formData: FormData) {
 
       payload[field.name] = path;
       uploadedFiles.push({ bucket: field.storageBucket, path });
+      timer.step(`upload:${field.name}`);
     }
 
     const query = recordId
@@ -278,6 +283,7 @@ export async function saveAdminRecord(formData: FormData) {
     }
 
     recordSaved = true;
+    timer.step("write");
 
     const replacedFiles = imageFields.flatMap((field) => {
       const newValue = payload[field.name];
@@ -298,11 +304,15 @@ export async function saveAdminRecord(formData: FormData) {
     });
 
     const cleanupErrors = await removeStoredFiles(database, replacedFiles);
+    timer.step("cleanup");
 
     if (cleanupErrors.length) {
       console.error("교체된 관리자 이미지 정리 실패:", cleanupErrors);
     }
   } catch (error) {
+    timer.step("failed");
+    timer.end();
+
     if (!recordSaved && uploadedFiles.length) {
       try {
         const database = await requireAdminDatabase();
@@ -326,6 +336,7 @@ export async function saveAdminRecord(formData: FormData) {
   }
 
   revalidateSection(section);
+  timer.end();
   redirect(
     getRedirectPath(section.adminPath, `${section.title} 저장 완료`, "success")
   );
@@ -349,9 +360,11 @@ export async function deleteAdminRecord(formData: FormData) {
   }
 
   let cleanupWarning = "";
+  const timer = createTimer(`delete ${section.id} #${recordId}`);
 
   try {
     const database = await requireAdminDatabase();
+    timer.step("auth");
     const imageFields = section.fields.filter(
       (field) => field.type === "image" && field.storageBucket
     );
@@ -379,6 +392,7 @@ export async function deleteAdminRecord(formData: FormData) {
 
         return path ? [{ bucket: field.storageBucket!, path }] : [];
       });
+      timer.step("readExisting");
     }
 
     const { data, error } = await database
@@ -394,14 +408,18 @@ export async function deleteAdminRecord(formData: FormData) {
     if (!data?.length) {
       throw new Error("삭제할 항목을 찾지 못했거나 DB 삭제 권한이 없습니다.");
     }
+    timer.step("write");
 
     const cleanupErrors = await removeStoredFiles(database, storedFiles);
+    timer.step("cleanup");
 
     if (cleanupErrors.length) {
       console.error("삭제된 관리자 항목 이미지 정리 실패:", cleanupErrors);
       cleanupWarning = "항목은 삭제했지만 이미지 파일 정리에 실패했습니다.";
     }
   } catch (error) {
+    timer.step("failed");
+    timer.end();
     redirect(
       getRedirectPath(
         section.adminPath,
@@ -412,6 +430,7 @@ export async function deleteAdminRecord(formData: FormData) {
   }
 
   revalidateSection(section);
+  timer.end();
 
   if (cleanupWarning) {
     redirect(getRedirectPath(section.adminPath, cleanupWarning, "error"));

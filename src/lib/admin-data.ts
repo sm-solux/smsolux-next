@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getAdminReadClient } from "@/lib/admin-db";
+import { createTimer } from "@/lib/timing";
 
 export async function fetchTableRecords(
   table: string,
@@ -10,6 +11,7 @@ export async function fetchTableRecords(
     limit?: number;
   }
 ) {
+  const timer = createTimer(`fetch ${table}`);
   const database = await getAdminReadClient();
   let query = database.from(table).select("*");
 
@@ -24,6 +26,8 @@ export async function fetchTableRecords(
   }
 
   const { data, error } = await query;
+  timer.step("select");
+  timer.end();
 
   if (error) {
     throw new Error(`${table} 조회 실패: ${error.message}`);
