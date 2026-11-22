@@ -5,16 +5,15 @@ import About from "@/components/home/About";
 import Review from "@/components/home/Review";
 import JoinUs from "@/components/home/JoinUs";
 import { supabase } from "@/lib/supabase";
+import { sortReviewsByGeneration } from "@/lib/review";
 
 // 관리자가 저장하면 revalidatePath로 바로 갱신된다. 시간 값은 그 호출이
 // 실패했을 때를 대비한 안전망이다.
 export const revalidate = 3600;
 
 export default async function Home() {
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const { data } = await supabase.from('reviews').select('*');
+  const reviews = sortReviewsByGeneration(data ?? []);
 
   return (
     <main className="flex flex-col w-full snap-y snap-mandatory text-white no-scrollbar scroll-smooth">

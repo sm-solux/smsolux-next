@@ -2,6 +2,7 @@ import AdminMessage from "@/components/admin/AdminMessage";
 import AdminSection from "@/components/admin/AdminSection";
 import { fetchTableRecords } from "@/lib/admin-data";
 import { ADMIN_SECTIONS } from "@/lib/admin-config";
+import { sortReviewsByGeneration } from "@/lib/review";
 
 type SearchParams = Promise<{
   message?: string;
@@ -14,10 +15,7 @@ export default async function AdminHomePage({
   searchParams: SearchParams;
 }) {
   const { message, status } = await searchParams;
-  const reviews = await fetchTableRecords("reviews", {
-    orderBy: "created_at",
-    ascending: false,
-  });
+  const reviews = sortReviewsByGeneration(await fetchTableRecords("reviews"));
 
   return (
     <div className="space-y-6">
