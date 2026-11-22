@@ -19,6 +19,11 @@ export interface AdminFieldConfig {
   accept?: string;
   maxSizeMb?: number;
   storageBucket?: string;
+  /**
+   * 선택 항목을 비워 저장할 때 넣을 값. 기본은 null인데, DB 컬럼이 NOT NULL이면
+   * null 저장이 실패하므로 그런 컬럼은 [] 나 "" 를 지정한다.
+   */
+  emptyValue?: unknown;
 }
 
 export interface AdminSectionConfig {
@@ -194,6 +199,8 @@ export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
         name: "award",
         label: "수상",
         placeholder: "대상",
+        // projects의 award·stacks·link는 DB에서 NOT NULL이라 비우면 빈 값으로 저장한다.
+        emptyValue: "",
       },
       {
         name: "category",
@@ -206,6 +213,7 @@ export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
         label: "기술 스택",
         type: "tags",
         placeholder: "Next.js, Supabase, Figma",
+        emptyValue: [],
       },
       {
         name: "image",
@@ -221,6 +229,7 @@ export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
         name: "link",
         label: "프로젝트 링크",
         placeholder: "https://...",
+        emptyValue: "",
       },
     ],
   },
@@ -304,6 +313,7 @@ export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
   },
 };
 
+// 순서는 공개 사이트 헤더(Header.tsx)의 메뉴 순서를 따른다.
 export const ADMIN_NAV_ITEMS = [
   {
     href: "/admin/home",
@@ -312,16 +322,16 @@ export const ADMIN_NAV_ITEMS = [
     description: "활동 후기",
   },
   {
-    href: "/admin/activity",
-    label: "Activity",
-    eyebrow: "/activity",
-    description: "활동 타임라인 관리",
-  },
-  {
     href: "/admin/projects",
     label: "Projects",
     eyebrow: "/project",
     description: "프로젝트 아카이브",
+  },
+  {
+    href: "/admin/activity",
+    label: "Activity",
+    eyebrow: "/activity",
+    description: "활동 타임라인 관리",
   },
   {
     href: "/admin/recruit",

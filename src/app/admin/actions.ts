@@ -102,10 +102,22 @@ async function removeStoredFiles(
 
   for (const [bucket, paths] of pathsByBucket) {
     try {
-      const { error } = await database.storage.from(bucket).remove(paths);
+      const { data, error } = await database.storage.from(bucket).remove(paths);
 
       if (error) {
         errors.push(`${bucket}/${paths.join(", ")}: ${error.message}`);
+        continue;
+      }
+
+      // Storage는 삭제 권한(RLS)이 없으면 오류 없이 빈 배열을 돌려준다. 실제로
+      // 지워진 파일 목록과 비교하지 않으면 실패가 조용히 묻힌다.
+      const removed = new Set((data ?? []).map((object) => object.name));
+      const notRemoved = paths.filter((path) => !removed.has(path));
+
+      if (notRemoved.length) {
+        errors.push(
+          `${bucket}/${notRemoved.join(", ")}: 삭제되지 않았습니다 (Storage 삭제 권한 확인 필요)`
+        );
       }
     } catch (error) {
       errors.push(`${bucket}/${paths.join(", ")}: ${getErrorMessage(error)}`);
@@ -186,7 +198,7 @@ function parseFieldValue(field: AdminFieldConfig, formData: FormData) {
       throw new AdminValidationError(`${field.label} 항목을 입력해주세요.`);
     }
 
-    return null;
+    return field.emptyValue ?? null;
   }
 
   switch (field.type) {
