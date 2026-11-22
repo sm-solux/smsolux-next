@@ -15,18 +15,3 @@ export function parseActivityDetailsInput(value: string): ActivityContent[] {
     })
     .filter((detail) => detail.title);
 }
-
-export function formatActivityDetailsInput(details?: ActivityContent[]) {
-  if (!details?.length) {
-    return "";
-  }
-
-  return details
-    .map((detail) =>
-      [detail.title?.trim() ?? "", detail.description?.trim() ?? ""]
-        .filter(Boolean)
-        .join(" :: ")
-    )
-    .filter(Boolean)
-    .join("\n");
-}
