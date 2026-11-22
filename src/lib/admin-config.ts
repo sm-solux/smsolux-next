@@ -133,6 +133,8 @@ export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
         type: "detail-list",
         rows: 5,
         placeholder: "세부 제목 :: 세부 설명",
+        // activities.details는 DB에서 NOT NULL(jsonb)이라 비우면 빈 목록으로 저장한다.
+        emptyValue: [],
         description: "한 줄에 하나씩 입력합니다. 형식: 제목 :: 설명",
       },
       {
@@ -255,6 +257,8 @@ export const ADMIN_SECTIONS: Record<string, AdminSectionConfig> = {
         label: "모집 기수",
         type: "number",
         placeholder: "35",
+        // recruitments.generation은 DB에서 NOT NULL이고 대신 넣을 값이 없어 필수로 받는다.
+        required: true,
       },
       {
         name: "start_date",

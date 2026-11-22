@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
+import { tableTag } from "@/lib/public-data";
 import { requireAdminDatabase } from "@/lib/admin-db";
 import { isAdminBypassEnabled, isAdminEmailAllowed } from "@/lib/admin-access";
 import { createClient } from "@/lib/supabase-server";
@@ -36,6 +37,7 @@ export async function getActivityEditPermission() {
 }
 
 function revalidateActivityPaths() {
+  updateTag(tableTag("activities"));
   ["/activity", "/admin", "/admin/activity"].forEach((path) =>
     revalidatePath(path)
   );
@@ -58,7 +60,8 @@ export async function saveActivityInline(
   const data = {
     title: payload.title.trim(),
     description: payload.description.trim(),
-    details: payload.details?.length ? payload.details : null,
+    // details는 DB에서 NOT NULL이라 세부 카드가 없으면 빈 목록으로 저장한다.
+    details: payload.details ?? [],
     order: payload.order,
   };
 
