@@ -8,7 +8,10 @@ export const metadata: Metadata = {
     description: '솔룩스 신입 부원 모집 안내 및 자주 묻는 질문',
 };
 
-export const revalidate = 0;
+// 모집 공고는 시작·마감 시각이 지나면 저장 없이도 화면이 바뀌어야 한다.
+// 그래서 다른 페이지보다 짧게 1분마다 다시 만든다. 마감 직후 최대 1분까지는
+// 이전 화면이 보일 수 있다.
+export const revalidate = 60;
 
 export default async function RecruitPage() {
     const now = getKstWallClockISOString();

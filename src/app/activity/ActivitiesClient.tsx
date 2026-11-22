@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import {
     Rocket,
@@ -19,7 +18,11 @@ import {
     X
 } from "lucide-react";
 import { Activity } from "@/types/activity";
-import { deleteActivityInline, saveActivityInline } from "./actions";
+import {
+    deleteActivityInline,
+    getActivityEditPermission,
+    saveActivityInline,
+} from "./actions";
 import {
     formatActivityDetailsInput,
     parseActivityDetailsInput,
@@ -28,7 +31,14 @@ import Link from "next/link";
 
 interface ActivitiesClientProps {
     initialActivities: Activity[];
-    canEdit?: boolean;
+}
+
+// Supabase 로그인 쿠키가 있는 브라우저만 서버에 편집 권한을 묻는다. 일반
+// 방문자는 쿠키가 없으므로 추가 요청이 생기지 않는다.
+function hasSupabaseAuthCookie() {
+    return document.cookie
+        .split(";")
+        .some((cookie) => /^\s*sb-.+-auth-token/.test(cookie));
 }
 
 type ActivityDraft = {
@@ -149,9 +159,29 @@ const ActivityIcon = ({ title }: { title: string }) => {
 
 export default function ActivitiesClient({
     initialActivities,
-    canEdit = false,
 }: ActivitiesClientProps) {
-    const router = useRouter();
+    const [canEdit, setCanEdit] = useState(false);
+
+    useEffect(() => {
+        if (process.env.NODE_ENV !== "development" && !hasSupabaseAuthCookie()) {
+            return;
+        }
+
+        let cancelled = false;
+
+        getActivityEditPermission()
+            .then((allowed) => {
+                if (!cancelled) {
+                    setCanEdit(allowed);
+                }
+            })
+            .catch(() => {});
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
     const [activities, setActivities] = useState(() => sortActivities(initialActivities));
     const [isEditorOpen, setIsEditorOpen] = useState(false);
     const [selectedId, setSelectedId] = useState<number | null>(
@@ -269,7 +299,6 @@ export default function ActivitiesClient({
             });
             setSelectedId(savedActivity.id ?? null);
             setDraft(createDraftFromActivity(savedActivity));
-            router.refresh();
         });
     };
 
@@ -299,7 +328,6 @@ export default function ActivitiesClient({
             setActivities(nextActivities);
             setSelectedId(fallback?.id ?? null);
             setDraft(fallback ? createDraftFromActivity(fallback) : null);
-            router.refresh();
         });
     };
 

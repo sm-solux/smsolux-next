@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdminDatabase } from "@/lib/admin-db";
+import { isAdminBypassEnabled, isAdminEmailAllowed } from "@/lib/admin-access";
+import { createClient } from "@/lib/supabase-server";
 import { normalizeActivityRecord } from "@/lib/activity";
 import type { Activity } from "@/types/activity";
 
@@ -18,6 +20,20 @@ type ActivityActionResult = {
   message: string;
   activity?: Activity;
 };
+
+// 공개 페이지를 캐시하려면 서버 렌더링 중에 쿠키를 읽으면 안 된다. 그래서 편집
+// 버튼을 보여줄지는 브라우저가 페이지를 받은 뒤 이 액션으로 따로 묻는다.
+export async function getActivityEditPermission() {
+  if (isAdminBypassEnabled()) {
+    return true;
+  }
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getClaims();
+  const email = data?.claims.email;
+
+  return !error && typeof email === "string" && isAdminEmailAllowed(email);
+}
 
 function revalidateActivityPaths() {
   ["/activity", "/admin", "/admin/activity"].forEach((path) =>
