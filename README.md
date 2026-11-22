@@ -39,7 +39,7 @@
 |---|---|---|
 | `/` | 메인: 히어로, 소개, 활동 후기 슬라이더, 지원 안내 | `reviews` |
 | `/project` | 기수·학기별 프로젝트 아카이브 | `projects` + Storage 썸네일 |
-| `/activity` | 1년 활동 소개. 관리자에게는 페이지 안 편집기가 보임 | `activities` |
+| `/activity` | 1년 활동 소개 | `activities` |
 | `/recruit` | 현재 모집 공고와 자주 묻는 질문 | `recruitments`, `faqs` |
 
 `/projects`는 `/project`로 이동합니다. 모든 페이지 푸터의 카카오톡 링크는 `site_settings`에서 읽습니다.
@@ -133,7 +133,7 @@ smsolux-next/
     ├── app/
     │   ├── page.tsx              # 메인
     │   ├── project/              # 프로젝트 아카이브
-    │   ├── activity/             # 활동 (+ 페이지 안 편집기, actions.ts)
+    │   ├── activity/             # 활동
     │   ├── recruit/              # 모집 공고, FAQ
     │   ├── auth/callback/        # Google 로그인 후 돌아오는 주소
     │   └── admin/                # 관리자 화면과 서버 액션(actions.ts)
@@ -179,7 +179,7 @@ smsolux-next/
 - 관리자가 저장·삭제하면 서버 액션이 그 테이블의 태그를 즉시 만료(`updateTag`)시킵니다. 그래서 저장 직후 첫 방문부터 새 내용이 보입니다.
 - 안전망으로 `/`, `/project`, `/activity`는 1시간, `/recruit`는 1분마다 다시 만듭니다. `/recruit`가 짧은 이유는 모집 시작·마감 시각이 지나면 저장하지 않아도 화면이 바뀌어야 하기 때문입니다.
 - 푸터의 사이트 설정도 같은 방식으로 태그를 달아 캐시합니다(`src/lib/site-settings.ts`).
-- 공개 페이지에서 쿠키를 읽으면 캐시가 꺼집니다. 그래서 `/activity`의 편집 버튼 권한은 페이지가 뜬 뒤 브라우저에서 따로 확인합니다.
+- 공개 페이지에서는 쿠키를 읽지 않습니다. 읽는 순간 캐시가 꺼지기 때문입니다. 내용 수정은 모두 `/admin`에서 합니다.
 
 ### 관리자 인증
 
@@ -218,7 +218,7 @@ smsolux-next/
 |---|---|
 | Authentication → URL Configuration | Site URL `https://sm-solux.dev`. Redirect URLs에 각 도메인의 `/auth/callback` (로컬 개발용 `http://localhost:3000/auth/callback` 포함) |
 | Authentication → Providers | Google 활성화 |
-| Storage | 공개 버킷 `project-thumbnail` (`supabase/migrations/`의 SQL로 생성) |
+| Storage | 공개 버킷 `project-thumbnail` (`supabase/migrations/`의 SQL로 생성). 읽기는 공개, **쓰기·삭제 정책은 두지 않습니다**. 업로드는 서버가 발급한 서명 URL로, 삭제는 서비스 키로만 합니다 |
 | Database | `site_settings` 테이블은 migration으로 관리. 나머지 테이블은 대시보드에서 관리 |
 
 ---

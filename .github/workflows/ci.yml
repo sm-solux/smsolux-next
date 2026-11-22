@@ -9,6 +9,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# 검사만 하므로 저장소 읽기 권한이면 충분하다. 공개 저장소라 기본 토큰 권한을
+# 최소로 묶어 둔다.
+permissions:
+  contents: read
+
 jobs:
   # 타입과 린트는 비밀값 없이 돌아간다. 포크 PR에서도 항상 실행된다.
   static:

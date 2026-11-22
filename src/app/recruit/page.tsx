@@ -23,16 +23,12 @@ export default async function RecruitPage() {
             getPublicActiveRecruitments(),
         ]);
     } catch (error) {
+        // 상세 원인은 서버 로그에만 남기고, 방문자에게는 DB 오류 내용을 보여주지 않는다.
         console.error("DB Error:", error);
         return (
             <div className="text-white text-center py-20">
                 <p className="text-red-500 font-bold mb-2">데이터를 불러오는데 실패했습니다.</p>
-                <p className="text-sm text-gray-400">
-                    {error instanceof Error ? error.message : String(error)}
-                </p>
-                <p className="text-xs text-gray-500 mt-2">
-                    (팁: Supabase에서 테이블의 RLS 정책을 확인해보세요.)
-                </p>
+                <p className="text-sm text-gray-400">잠시 후 다시 시도해주세요.</p>
             </div>
         );
     }
