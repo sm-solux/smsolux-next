@@ -10,6 +10,8 @@ import type { AdminFieldConfig, AdminSectionConfig } from "@/lib/admin-config";
 import { PencilLine, Plus } from "lucide-react";
 import AdminDeleteButton from "@/components/admin/AdminDeleteButton";
 import { getRecordHeadline } from "@/lib/admin-record";
+import { uploadFormImages } from "@/lib/admin-upload";
+import { useRouter } from "next/navigation";
 
 function formatDateTimeLocal(value: unknown) {
   if (typeof value !== "string" || !value) {
@@ -170,8 +172,28 @@ export default function RecordForm({
   /** 이미지 필드의 미리보기 URL. supabase-js를 클라이언트 번들에 넣지 않으려고 서버에서 계산해 넘긴다. */
   previewUrls?: Record<string, string>;
 }) {
+  const router = useRouter();
   const primaryKey = section.primaryKey ?? "id";
   const recordId = record[primaryKey];
+  const hasImageField = section.fields.some((field) => field.type === "image");
+
+  // 이미지가 있는 섹션은 파일을 먼저 Storage에 올린 뒤 경로만 서버 액션에 넘긴다.
+  const saveAction = hasImageField
+    ? async (formData: FormData) => {
+        try {
+          await uploadFormImages(section, formData);
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : "이미지 업로드에 실패했습니다.";
+          router.push(
+            `${section.adminPath}?${new URLSearchParams({ message, status: "error" })}`
+          );
+          return;
+        }
+
+        await saveAdminRecord(formData);
+      }
+    : saveAdminRecord;
   const formId = `${section.id}-${String(recordId ?? "new").replace(
     /[^a-zA-Z0-9_-]/g,
     "-"
@@ -202,7 +224,7 @@ export default function RecordForm({
       <div>
         <form
           id={formId}
-          action={saveAdminRecord}
+          action={saveAction}
           data-pending-label={isCreateForm ? "추가" : "저장"}
           className="space-y-5"
         >

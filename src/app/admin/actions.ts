@@ -30,22 +30,19 @@ const IMAGE_EXTENSION_BY_MIME_TYPE: Record<string, string> = {
   "image/avif": "avif",
 };
 
-function getImageFile(field: AdminFieldConfig, formData: FormData) {
-  const value = formData.get(field.name);
-
-  if (!(value instanceof File) || value.size === 0) {
-    return null;
-  }
-
+function getImageExtension(
+  field: AdminFieldConfig,
+  file: { type: string; size: number }
+) {
   const allowedMimeTypes = (field.accept ?? "")
     .split(",")
     .map((type) => type.trim())
     .filter(Boolean);
-  const extension = IMAGE_EXTENSION_BY_MIME_TYPE[value.type];
+  const extension = IMAGE_EXTENSION_BY_MIME_TYPE[file.type];
 
   if (
     !extension ||
-    (allowedMimeTypes.length && !allowedMimeTypes.includes(value.type))
+    (allowedMimeTypes.length && !allowedMimeTypes.includes(file.type))
   ) {
     throw new AdminValidationError(
       `${field.label}은 JPG, PNG, WebP, GIF, AVIF 파일만 업로드할 수 있습니다.`
@@ -54,34 +51,111 @@ function getImageFile(field: AdminFieldConfig, formData: FormData) {
 
   const maxSizeMb = field.maxSizeMb ?? 5;
 
-  if (value.size > maxSizeMb * 1024 * 1024) {
+  if (file.size > maxSizeMb * 1024 * 1024) {
     throw new AdminValidationError(
       `${field.label} 파일 크기는 ${maxSizeMb}MB 이하여야 합니다.`
     );
   }
 
-  return { file: value, extension };
+  return extension;
+}
+
+// 브라우저가 Storage에 직접 올린 이미지의 경로. 발급할 때 정한 형식
+// (`섹션/연도/uuid.확장자`)이 아니면 받지 않는다.
+function getUploadedImagePath(
+  section: AdminSectionConfig,
+  field: AdminFieldConfig,
+  formData: FormData
+) {
+  const value = formData.get(field.name);
+
+  if (typeof value !== "string" || !value.trim()) {
+    return null;
+  }
+
+  const path = value.trim();
+  const pattern = new RegExp(
+    `^${section.id}/\\d{4}/[0-9a-f-]{36}\\.(?:${Object.values(
+      IMAGE_EXTENSION_BY_MIME_TYPE
+    ).join("|")})$`
+  );
+
+  if (!pattern.test(path)) {
+    throw new AdminValidationError(`${field.label} 업로드 경로가 올바르지 않습니다.`);
+  }
+
+  return path;
 }
 
 async function removeStoredFiles(
   database: AdminDatabaseClient,
   files: StoredFile[]
 ) {
-  const errors: string[] = [];
+  // 같은 버킷의 파일은 remove 한 번에 묶어 지운다.
+  const pathsByBucket = new Map<string, string[]>();
 
   for (const { bucket, path } of files) {
+    pathsByBucket.set(bucket, [...(pathsByBucket.get(bucket) ?? []), path]);
+  }
+
+  const errors: string[] = [];
+
+  for (const [bucket, paths] of pathsByBucket) {
     try {
-      const { error } = await database.storage.from(bucket).remove([path]);
+      const { error } = await database.storage.from(bucket).remove(paths);
 
       if (error) {
-        errors.push(`${bucket}/${path}: ${error.message}`);
+        errors.push(`${bucket}/${paths.join(", ")}: ${error.message}`);
       }
     } catch (error) {
-      errors.push(`${bucket}/${path}: ${getErrorMessage(error)}`);
+      errors.push(`${bucket}/${paths.join(", ")}: ${getErrorMessage(error)}`);
     }
   }
 
   return errors;
+}
+
+export type AdminImageUploadTicket =
+  | { ok: true; path: string; signedUrl: string }
+  | { ok: false; message: string };
+
+/**
+ * 이미지 업로드용 서명 URL을 발급한다. 파일 자체는 브라우저가 Storage로 바로
+ * 올린다. Vercel 함수를 거치면 요청 본문이 4.5MB로 막히고 전송도 한 번 더 한다.
+ */
+export async function createAdminImageUpload(
+  sectionId: string,
+  fieldName: string,
+  file: { type: string; size: number }
+): Promise<AdminImageUploadTicket> {
+  const section = getSection(sectionId);
+  const field = section?.fields.find(
+    (candidate) => candidate.name === fieldName && candidate.type === "image"
+  );
+
+  if (!section || !field?.storageBucket) {
+    return { ok: false, message: "알 수 없는 이미지 항목입니다." };
+  }
+
+  try {
+    const database = await requireAdminDatabase();
+    const extension = getImageExtension(field, file);
+    const path = `${section.id}/${new Date().getUTCFullYear()}/${randomUUID()}.${extension}`;
+    const { data, error } = await database.storage
+      .from(field.storageBucket)
+      .createSignedUploadUrl(path);
+
+    if (error || !data) {
+      throw new Error(error?.message ?? "업로드 주소를 받지 못했습니다.");
+    }
+
+    return { ok: true, path, signedUrl: data.signedUrl };
+  } catch (error) {
+    return {
+      ok: false,
+      message: `${field.label} 업로드 준비 실패: ${getErrorMessage(error)}`,
+    };
+  }
 }
 
 function parseDetailList(value: string) {
@@ -227,9 +301,14 @@ export async function saveAdminRecord(formData: FormData) {
     }
 
     for (const field of imageFields) {
-      const selectedImage = getImageFile(field, formData);
+      if (!field.storageBucket) {
+        throw new Error(`${field.label}의 스토리지 버킷 설정이 없습니다.`);
+      }
 
-      if (!selectedImage) {
+      // 파일은 브라우저가 이미 Storage에 올렸고, 폼에는 그 경로만 담겨 온다.
+      const path = getUploadedImagePath(section, field, formData);
+
+      if (!path) {
         if (field.required && !recordId) {
           throw new AdminValidationError(`${field.label} 파일을 선택해주세요.`);
         }
@@ -237,28 +316,8 @@ export async function saveAdminRecord(formData: FormData) {
         continue;
       }
 
-      if (!field.storageBucket) {
-        throw new Error(`${field.label}의 스토리지 버킷 설정이 없습니다.`);
-      }
-
-      const path = `${section.id}/${new Date().getUTCFullYear()}/${randomUUID()}.${
-        selectedImage.extension
-      }`;
-      const { error } = await database.storage
-        .from(field.storageBucket)
-        .upload(path, await selectedImage.file.arrayBuffer(), {
-          cacheControl: "31536000",
-          contentType: selectedImage.file.type,
-          upsert: false,
-        });
-
-      if (error) {
-        throw new Error(`${field.label} 업로드 실패: ${error.message}`);
-      }
-
       payload[field.name] = path;
       uploadedFiles.push({ bucket: field.storageBucket, path });
-      timer.step(`upload:${field.name}`);
     }
 
     const query = recordId
