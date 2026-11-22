@@ -36,8 +36,26 @@ const getAwardRank = (award: string): number => {
     return 99;
 };
 
+type ProjectSortFields = {
+    generation?: unknown;
+    term?: unknown;
+    award?: unknown;
+    title?: unknown;
+};
+
+/**
+ * 프로젝트 정렬 기준. 공개 /project 페이지와 관리자 목록이 같은 순서를 쓴다.
+ * 기수 높은 순 → 학기(2학기 먼저) → 수상 등급 → 제목.
+ */
+export const compareProjects = (a: ProjectSortFields, b: ProjectSortFields) =>
+    Number(b.generation ?? 0) - Number(a.generation ?? 0) ||
+    String(b.term ?? "").localeCompare(String(a.term ?? "")) ||
+    getAwardRank(String(a.award ?? "")) - getAwardRank(String(b.award ?? "")) ||
+    String(a.title ?? "").localeCompare(String(b.title ?? ""), "ko");
+
 export const transformData = (flatData: RawProject[]) => {
-    const groupedByGen = flatData.reduce<Record<number, GroupedArchive>>((acc, project) => {
+    // 먼저 compareProjects 순서로 정렬해 두면 묶은 뒤에도 학기 안의 순서가 유지된다.
+    const groupedByGen = [...flatData].sort(compareProjects).reduce<Record<number, GroupedArchive>>((acc, project) => {
         const { generation, year, term } = project;
         if (!acc[generation]) {
             acc[generation] = { gen: generation, year, semesters: {} };
@@ -73,10 +91,7 @@ export const transformData = (flatData: RawProject[]) => {
                                 bucket: "project-thumbnail",
                             }),
                             link: p.link || "",
-                        }))
-                        .sort((a: Project, b: Project) =>
-                            getAwardRank(a.award ?? "") - getAwardRank(b.award ?? "")
-                        ),
+                        })),
                 })),
         }));
 };

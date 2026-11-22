@@ -1,13 +1,23 @@
 import { AwardBadge, CategoryBadge, TechBadge } from "./Badge";
 import { Code, ExternalLink, Users, ArrowUpRight } from "lucide-react";
 
+import Image from "next/image";
 import { Project } from "@/types/project";
+
+const SUPABASE_STORAGE_PREFIX = process.env.NEXT_PUBLIC_SUPABASE_URL
+    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/`
+    : null;
+
+// next.config.ts의 images.remotePatterns와 같은 범위만 최적화 대상으로 본다.
+const isOptimizableImage = (src: string) =>
+    Boolean(SUPABASE_STORAGE_PREFIX && src.startsWith(SUPABASE_STORAGE_PREFIX));
 
 export const ProjectCard = ({ project }: { project: Project }) => {
     return (
         <a
-            href={project.link}
-            target="_blank"
+            // 링크가 비어 있으면 href를 빼서, 눌러도 현재 페이지가 새 탭으로 열리지 않게 한다.
+            href={project.link || undefined}
+            target={project.link ? "_blank" : undefined}
             rel="noopener noreferrer"
             className="group block relative bg-[#16171A] border border-white/10 rounded-2xl overflow-hidden transition-colors duration-300 hover:border-white/20"
         >
@@ -17,11 +27,25 @@ export const ProjectCard = ({ project }: { project: Project }) => {
             <div className="h-40 md:h-44 w-full relative overflow-hidden bg-gray-900">
                 {project.image ? (
                     <>
-                        <img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                        />
+                        {isOptimizableImage(project.image) ? (
+                            <Image
+                                src={project.image}
+                                alt={project.title}
+                                fill
+                                sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw"
+                                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                            />
+                        ) : (
+                            // Supabase 밖의 주소는 next/image 허용 목록에 없어 원본 그대로 쓴다.
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                                src={project.image}
+                                alt={project.title}
+                                loading="lazy"
+                                decoding="async"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                            />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     </>
                 ) : (
