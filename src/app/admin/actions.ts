@@ -11,6 +11,7 @@ import {
 import { requireAdminDatabase } from "@/lib/admin-db";
 import { getSupabaseStorageObjectPath } from "@/lib/storage";
 import { SITE_SETTINGS_CACHE_TAG } from "@/lib/site-settings";
+import { tableTag } from "@/lib/public-data";
 import { createTimer } from "@/lib/timing";
 
 class AdminValidationError extends Error {}
@@ -270,6 +271,9 @@ function getErrorMessage(error: unknown) {
 }
 
 function revalidateSection(section: AdminSectionConfig) {
+  // 공개 페이지가 읽는 테이블 캐시를 즉시 만료시킨다. revalidatePath만으로는
+  // 저장 직후 첫 방문에 예전 화면이 한 번 나간다 (lib/public-data.ts 참고).
+  updateTag(tableTag(section.table));
   section.revalidatePaths.forEach((path) => revalidatePath(path));
 
   // 사이트 설정은 푸터가 캐시해 두고 쓰므로 태그로 따로 무효화한다.

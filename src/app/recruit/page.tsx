@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import RecruitClient from './RecruitClient';
-import { supabase } from '@/lib/supabase';
+import { getPublicActiveRecruitments, getPublicFaqs } from '@/lib/public-data';
 import { getKstWallClockISOString } from '@/utils/date';
 
 export const metadata: Metadata = {
@@ -14,28 +14,22 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function RecruitPage() {
-    const now = getKstWallClockISOString();
-    const [faqsResult, recruitmentsResult] = await Promise.all([
-        supabase.from('faqs').select('*').order('id', { ascending: true }),
-        supabase
-            .from('recruitments')
-            .select('*')
-            .eq('is_active', true)
-            .lte('start_date', now)
-            .gt('end_date', now)
-            .order('start_date', { ascending: false })
-            .limit(1)
-            .maybeSingle()
-    ]);
+    let faqs;
+    let recruitments;
 
-    const pageError = faqsResult.error || recruitmentsResult.error;
-
-    if (pageError) {
-        console.error("DB Error:", pageError);
+    try {
+        [faqs, recruitments] = await Promise.all([
+            getPublicFaqs(),
+            getPublicActiveRecruitments(),
+        ]);
+    } catch (error) {
+        console.error("DB Error:", error);
         return (
             <div className="text-white text-center py-20">
                 <p className="text-red-500 font-bold mb-2">데이터를 불러오는데 실패했습니다.</p>
-                <p className="text-sm text-gray-400">{pageError.message}</p>
+                <p className="text-sm text-gray-400">
+                    {error instanceof Error ? error.message : String(error)}
+                </p>
                 <p className="text-xs text-gray-500 mt-2">
                     (팁: Supabase에서 테이블의 RLS 정책을 확인해보세요.)
                 </p>
@@ -43,10 +37,20 @@ export default async function RecruitPage() {
         );
     }
 
+    // 공개 중인 공고는 시작일 최신순으로 캐시돼 있다. 지금 기간 안에 있는 첫 공고를 고른다.
+    // 저장값은 한국 시각을 UTC 형식으로 담고 있어 같은 기준의 현재 시각과 비교한다.
+    const now = Date.parse(getKstWallClockISOString());
+    const activeRecruitment =
+        recruitments.find(
+            (recruitment) =>
+                Date.parse(recruitment.start_date) <= now &&
+                Date.parse(recruitment.end_date) > now
+        ) ?? null;
+
     return (
         <RecruitClient
-            initialFaqs={faqsResult.data || []}
-            activeRecruitment={recruitmentsResult.data}
+            initialFaqs={faqs}
+            activeRecruitment={activeRecruitment}
         />
     );
 }

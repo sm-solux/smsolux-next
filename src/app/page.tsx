@@ -4,7 +4,7 @@ import Introduce from "@/components/home/Introduce"
 import About from "@/components/home/About";
 import Review from "@/components/home/Review";
 import JoinUs from "@/components/home/JoinUs";
-import { supabase } from "@/lib/supabase";
+import { getPublicReviews } from "@/lib/public-data";
 import { sortReviewsByGeneration } from "@/lib/review";
 
 // 관리자가 저장하면 revalidatePath로 바로 갱신된다. 시간 값은 그 호출이
@@ -12,8 +12,7 @@ import { sortReviewsByGeneration } from "@/lib/review";
 export const revalidate = 3600;
 
 export default async function Home() {
-  const { data } = await supabase.from('reviews').select('*');
-  const reviews = sortReviewsByGeneration(data ?? []);
+  const reviews = sortReviewsByGeneration(await getPublicReviews().catch(() => []));
 
   return (
     <main className="flex flex-col w-full snap-y snap-mandatory text-white no-scrollbar scroll-smooth">
