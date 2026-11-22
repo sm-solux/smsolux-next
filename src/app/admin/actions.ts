@@ -232,7 +232,9 @@ function getRedirectPath(
   message: string,
   status: "success" | "error"
 ) {
-  const params = new URLSearchParams({ message, status });
+  // t: 같은 결과 메시지가 연달아 나와도 주소가 달라지게 하는 값. 관리자 모달의
+  // 처리 중 표시가 주소 변화를 보고 꺼진다 (CreateRecordModal).
+  const params = new URLSearchParams({ message, status, t: Date.now().toString() });
   return `${path}?${params.toString()}`;
 }
 

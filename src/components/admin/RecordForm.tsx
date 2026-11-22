@@ -186,7 +186,11 @@ export default function RecordForm({
           const message =
             error instanceof Error ? error.message : "이미지 업로드에 실패했습니다.";
           router.push(
-            `${section.adminPath}?${new URLSearchParams({ message, status: "error" })}`
+            `${section.adminPath}?${new URLSearchParams({
+              message,
+              status: "error",
+              t: Date.now().toString(),
+            })}`
           );
           return;
         }

@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useSearchParams } from "next/navigation";
 import { LoaderCircle, PencilLine, Plus, X } from "lucide-react";
 
 export default function CreateRecordModal({
@@ -16,21 +17,30 @@ export default function CreateRecordModal({
   mode?: "create" | "edit";
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [pendingLabel, setPendingLabel] = useState<string | null>(null);
-  const actionStartedRef = useRef(false);
+  // 저장·삭제가 끝나면 서버가 매번 다른 값을 붙인 주소로 보낸다. 처리 중 표시는
+  // 시작할 때의 주소에 묶어 두고, 주소가 바뀌면(= 서버 응답이 도착하면) 끈다.
+  // 예전에는 20초 안전 타이머로만 꺼서, 0.2초에 끝난 저장도 20초 동안 가렸다.
+  const searchParamsKey = useSearchParams().toString();
+  const [pending, setPending] = useState<{ label: string; key: string } | null>(
+    null
+  );
+  const pendingLabel =
+    pending && pending.key === searchParamsKey ? pending.label : null;
 
-  const startAction = useCallback((label: string) => {
-    if (actionStartedRef.current) {
-      return false;
-    }
+  const startAction = useCallback(
+    (label: string) => {
+      if (pendingLabel) {
+        return false;
+      }
 
-    actionStartedRef.current = true;
-    setPendingLabel(label);
+      setPending({ label, key: searchParamsKey });
 
-    // Let the browser dispatch the submit event before removing the modal form.
-    window.setTimeout(() => setIsOpen(false), 0);
-    return true;
-  }, []);
+      // Let the browser dispatch the submit event before removing the modal form.
+      window.setTimeout(() => setIsOpen(false), 0);
+      return true;
+    },
+    [pendingLabel, searchParamsKey]
+  );
 
   const handleSubmitCapture = (event: React.FormEvent<HTMLDivElement>) => {
     const form = event.target;
@@ -72,10 +82,8 @@ export default function CreateRecordModal({
       return;
     }
 
-    const timeoutId = window.setTimeout(() => {
-      actionStartedRef.current = false;
-      setPendingLabel(null);
-    }, 20_000);
+    // 응답이 끝내 오지 않을 때를 위한 안전장치.
+    const timeoutId = window.setTimeout(() => setPending(null), 20_000);
 
     return () => window.clearTimeout(timeoutId);
   }, [pendingLabel]);
