@@ -15,7 +15,6 @@ export const SemesterSection = ({ semester }: { semester: SemesterInfo }) => {
 };
 
 export const GenerationSection = ({ archive }: { archive: GenerationArchive }) => {
-    console.log(archive)
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
