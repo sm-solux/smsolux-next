@@ -191,6 +191,7 @@ export default function ActivitiesClient({
         initialActivities[0] ? createDraftFromActivity(initialActivities[0]) : null
     );
     const [message, setMessage] = useState<string | null>(null);
+    const [deleteArmed, setDeleteArmed] = useState<{ id: number; at: number } | null>(null);
     const [isPending, startTransition] = useTransition();
     const draftDetails = draft ? parseActivityDetailsInput(draft.detailsText) : [];
 
@@ -310,9 +311,21 @@ export default function ActivitiesClient({
             return;
         }
 
-        if (!window.confirm("이 활동 카드를 삭제할까요?")) {
+        // window.confirm은 앱 안 브라우저에서 창 없이 바로 false를 돌려줄 수 있어
+        // 쓰지 않는다. 4초 안에 삭제 버튼을 한 번 더 눌러야 실제로 지운다.
+        const now = Date.now();
+
+        if (
+            !deleteArmed ||
+            deleteArmed.id !== draft.id ||
+            now - deleteArmed.at > 4000
+        ) {
+            setDeleteArmed({ id: draft.id, at: now });
+            setMessage("삭제 버튼을 4초 안에 한 번 더 누르면 이 활동 카드를 삭제합니다.");
             return;
         }
+
+        setDeleteArmed(null);
 
         startTransition(async () => {
             const result = await deleteActivityInline(draft.id as number);

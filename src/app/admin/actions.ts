@@ -239,7 +239,22 @@ function getRedirectPath(
 }
 
 function getErrorMessage(error: unknown) {
-  return error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  // Supabase DB 오류(PostgrestError)는 Error 인스턴스가 아닌 일반 객체로 온다.
+  // 여기서 걸러내지 않으면 실제 원인이 "알 수 없는 오류"로 가려진다.
+  if (
+    error &&
+    typeof error === "object" &&
+    "message" in error &&
+    typeof error.message === "string"
+  ) {
+    return error.message;
+  }
+
+  return "알 수 없는 오류가 발생했습니다.";
 }
 
 function revalidateSection(section: AdminSectionConfig) {
