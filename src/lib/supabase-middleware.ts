@@ -37,9 +37,13 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims는 프로젝트의 비대칭 서명 키(ES256)로 JWT를 그 자리에서 검증한다.
+  // getUser처럼 요청마다 Supabase 인증 서버에 다녀오지 않으며, 만료된 토큰은
+  // 이 호출 안에서 갱신되어 setAll로 쿠키에 다시 써진다.
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims
+    ? { email: typeof data.claims.email === "string" ? data.claims.email : null }
+    : null;
 
   const path = request.nextUrl.pathname;
   const isAdminRoute = path.startsWith("/admin");
